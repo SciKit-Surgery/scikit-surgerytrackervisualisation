@@ -1,7 +1,7 @@
 # coding=utf-8
 
 """Main loop for tracking visualisation"""
-from scikit-surgerytrackervisualisation.shapes import cone, cylinder
+#from sksurgerytrackervisualisation.shapes import cone, cylinder
 
 def run(config, verbose):
     """ Run the application """

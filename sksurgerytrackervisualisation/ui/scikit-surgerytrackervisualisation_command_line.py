@@ -4,8 +4,8 @@
 
 
 import argparse
-from scikit-surgerytrackervisualisation import __version__
-from scikit-surgerytrackervisualisation.application.scikit-surgerytrackervisualisation import run
+from sksurgerytrackervisualisation import __version__
+from sksurgerytrackervisualisation.application.sksurgerytrackervisualisation import run
 
 
 def main(args=None):
