@@ -27,12 +27,12 @@ scikit-surgerytrackervisualisation is part of the `SNAPPY`_ software project, de
 
 scikit-surgerytrackervisualisation supports Python 2.7 and Python 3.6.
 
-scikit-surgerytrackervisualisation is currently a demo project, which will add/multiply two numbers. Example usage:
+scikit-surgerytrackervisualisation implements a basic interface for showing tracking output from a SNAPPY tracker. 
 
 ::
 
-    python scikit-surgerytrackervisualisation.py 5 8
-    python scikit-surgerytrackervisualisation.py 3 6 --multiply
+    python scikit-surgerytrackervisualisation.py 
+    python scikit-surgerytrackervisualisation.py --config config.json
 
 Please explore the project structure, and implement your own functionality.
 

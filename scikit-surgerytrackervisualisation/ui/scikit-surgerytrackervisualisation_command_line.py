@@ -5,7 +5,7 @@
 
 import argparse
 from scikit-surgerytrackervisualisation import __version__
-from scikit-surgerytrackervisualisation.ui.scikit-surgerytrackervisualisation_demo import run_demo
+from scikit-surgerytrackervisualisation.application.scikit-surgerytrackervisualisation import run
 
 
 def main(args=None):
@@ -13,19 +13,10 @@ def main(args=None):
 
     parser = argparse.ArgumentParser(description='scikit-surgerytrackervisualisation')
 
-    ## ADD POSITIONAL ARGUMENTS
-    parser.add_argument("x",
-                        type=int,
-                        help="1st number")
-
-    parser.add_argument("y",
-                        type=int,
-                        help="2nd number")
-
     # ADD OPTINAL ARGUMENTS
-    parser.add_argument("-m", "--multiply",
+    parser.add_argument("-c", "--config",
                         action="store_true",
-                        help="Enable multiplication of inputs."
+                        help="A configuration file."
                         )
 
     parser.add_argument("-v", "--verbose",
@@ -42,4 +33,4 @@ def main(args=None):
 
     args = parser.parse_args(args)
 
-    run_demo(args.x, args.y, args.multiply, args.verbose)
+    run(args.config, args.verbose)
