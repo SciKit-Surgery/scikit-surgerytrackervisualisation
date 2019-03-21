@@ -8,6 +8,7 @@ from PySide2.QtWidgets import QApplication
 from sksurgeryutils.common_overlay_apps import OverlayBaseApp
 from sksurgerynditracker.nditracker import NDITracker
 from sksurgeryarucotracker.arucotracker import ArUcoTracker
+from sksurgerytrackervisualisation.shapes.cylinder import VTKCylinderModel
 
 class OverlayApp(OverlayBaseApp):
     """Inherits from OverlayBaseApp, adding code to move vtk models 
@@ -44,6 +45,14 @@ class OverlayApp(OverlayBaseApp):
                 self._tracker = ArUcoTracker(tracker_config)
             else:
                 self._tracker = NDITracker(tracker_config)
+        
+        print ("adding a cylinder")
+        cylinder = VTKCylinderModel(10.0, 5.0, (1.0, 0.0, 0.0), 'cyl01',True,1.0)
+        models=[]
+        models.append(cylinder)
+        self.vtk_overlay_window.add_vtk_models(models)
+        print ("added a cylinder")
+        print (self.vtk_overlay_window.GetInteractorStyle())
 
     def update(self):
         """Update the background renderer with a new frame,
@@ -58,6 +67,7 @@ class OverlayApp(OverlayBaseApp):
 
         self.vtk_overlay_window.set_video_image(image)
         self.vtk_overlay_window.Render()
+        #self.vtk_overlay_window._RenderWindow.Render()
 
     def _update_tracking(self):
         """Internal method to move the rendered models in

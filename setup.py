@@ -55,13 +55,13 @@ setup(
         'numpy>=1.11'
         'scikit-surgerycore',
         'scikit-surgeryutils',
-        'scikit-surgerynditracker'
+        'scikit-surgerynditracker',
         'scikit-surgeryarucotracker'
     ],
 
     entry_points={
         'console_scripts': [
-            'scikit-surgerytrackervisualisation=scikit-surgerytrackervisualisation.__main__:main',
+            'sksurgerytrackervisualisation=sksurgerytrackervisualisation.__main__:main',
         ],
     },
 )
