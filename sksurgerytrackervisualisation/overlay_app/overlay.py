@@ -10,12 +10,26 @@ from sksurgerynditracker.nditracker import NDITracker
 from sksurgeryarucotracker.arucotracker import ArUcoTracker
 from sksurgerytrackervisualisation.shapes.cylinder import VTKCylinderModel
 
+def configure_tracker (config):
+    if "tracker type" not in config:
+        raise KeyError ('Tracker configuration requires tracker type')
+
+    tracker_type = config.get("tracker type")
+    tracker = None
+    if tracker_type in ("vega", "polaris", "aurora", "dummy"):
+        tracker = NDITracker(config)
+    if tracker_type in ("aruco"):
+        tracker = ArUcoTracker(config)
+
+    tracker.start_tracking()
+    return tracker
+
 class OverlayApp(OverlayBaseApp):
-    """Inherits from OverlayBaseApp, adding code to move vtk models 
+    """Inherits from OverlayBaseApp, adding code to move vtk models
     based on input from a scikitsurgery tracker"""
 
     def __init__(self, config):
-        """Overides overlay base app's init, to initialise the 
+        """Overides overlay base app's init, to initialise the
         external tracking system. Together with a video source"""
 
         if "image source" in config:
@@ -40,19 +54,16 @@ class OverlayApp(OverlayBaseApp):
                 self._video_loop_buffer = cycle(video_buffer)
 
         self._tracker = None
-        if "use aruco" in config:
-            if config.get("use aruco"):
-                self._tracker = ArUcoTracker(tracker_config)
-            else:
-                self._tracker = NDITracker(tracker_config)
-        
-        print ("adding a cylinder")
+        if "tracker config" in config:
+            tracker_config = config.get("tracker config")
+            self._tracker = configure_tracker(config.get("tracker config"))
+
+
+
         cylinder = VTKCylinderModel(10.0, 5.0, (1.0, 0.0, 0.0), 'cyl01',True,1.0)
         models=[]
         models.append(cylinder)
         self.vtk_overlay_window.add_vtk_models(models)
-        print ("added a cylinder")
-        print (self.vtk_overlay_window.GetInteractorStyle())
 
     def update(self):
         """Update the background renderer with a new frame,
@@ -82,15 +93,22 @@ class OverlayApp(OverlayBaseApp):
             #add update the model's orientation
             actor.SetOrientation(orientation)
         """
-        pass
+        self._tracker.get_frame()
 
 #here's a dummy app just to test the class. Quickly
 if __name__ == '__main__':
     app = QApplication([])
 
     configuration = { "image source" : "../../data/noisy_logo.avi",
-                      "loop video"   : True }
-    
+                      "loop video"   : True,
+                        "tracker config" :
+                        {
+                            "tracker type" : "aruco",
+                            "debug" : True
+                        }
+
+                    }
+
     configuration_live = { "image source" : 0,
                       "loop video"   : False }
     viewer = OverlayApp(configuration)
@@ -99,7 +117,7 @@ if __name__ == '__main__':
     #viewer.add_vtk_models_from_dir(model_dir)
 
     viewer.start()
-   
+
    #start the application
     exit(app.exec_())
 
