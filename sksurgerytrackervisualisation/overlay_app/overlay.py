@@ -4,11 +4,22 @@
 #from sksurgerytrackervisualisation.shapes import cone, cylinder
 from itertools import cycle
 from sys import version_info, exit
+from vtk.util import numpy_support
+import vtk
 from PySide2.QtWidgets import QApplication
 from sksurgeryutils.common_overlay_apps import OverlayBaseApp
 from sksurgerynditracker.nditracker import NDITracker
 from sksurgeryarucotracker.arucotracker import ArUcoTracker
 from sksurgerytrackervisualisation.shapes.cylinder import VTKCylinderModel
+
+def np2vtk(mat):
+    if mat.shape == (4, 4):
+        obj = vtk.vtkMatrix4x4()
+        for i in range(4):
+            for j in range(4):
+                obj.SetElement(i, j, mat[i, j])
+        return obj
+
 
 def configure_tracker (config):
     if "tracker type" not in config:
@@ -93,7 +104,15 @@ class OverlayApp(OverlayBaseApp):
             #add update the model's orientation
             actor.SetOrientation(orientation)
         """
-        self._tracker.get_frame()
+        port_handles, _, _, tracking, _ = self._tracker.get_frame()
+
+        if port_handles:
+            #these will need working on, need a way to match model names with port handles
+            for trk in tracking:
+                for actor in self.vtk_overlay_window.get_foreground_renderer().GetActors():
+                    print (trk)
+                    actor.SetUserMatrix(np2vtk(trk))
+        self.vtk_overlay_window.set_camera_state({"ClippingRange": [10, 800]})
 
 #here's a dummy app just to test the class. Quickly
 if __name__ == '__main__':
