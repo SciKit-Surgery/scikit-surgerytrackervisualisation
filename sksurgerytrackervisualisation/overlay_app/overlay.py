@@ -35,6 +35,11 @@ def configure_tracker (config):
     tracker.start_tracking()
     return tracker
 
+def populate_models (model_config):
+
+    models = []
+    return models
+
 class OverlayApp(OverlayBaseApp):
     """Inherits from OverlayBaseApp, adding code to move vtk models
     based on input from a scikitsurgery tracker"""
@@ -72,7 +77,8 @@ class OverlayApp(OverlayBaseApp):
 
 
         cylinder = VTKCylinderModel(10.0, 5.0, (1.0, 0.0, 0.0), 'cyl01',True,1.0)
-        models=[]
+        #models will be a list containing vtk actors and 
+        models = populate_models (config.get("models")) 
         models.append(cylinder)
         self.vtk_overlay_window.add_vtk_models(models)
 
@@ -89,6 +95,7 @@ class OverlayApp(OverlayBaseApp):
 
         self.vtk_overlay_window.set_video_image(image)
         self.vtk_overlay_window.Render()
+        self.vtk_overlay_window.foreground_renderer.ResetCamera(-300,300,-300,300,-200,0)
         #self.vtk_overlay_window._RenderWindow.Render()
 
     def _update_tracking(self):
@@ -106,13 +113,16 @@ class OverlayApp(OverlayBaseApp):
         """
         port_handles, _, _, tracking, _ = self._tracker.get_frame()
 
-        if port_handles:
+         for index, port_handle in enumerate(port_handles):
             #these will need working on, need a way to match model names with port handles
-            for trk in tracking:
+            print (port_handle)
+            #need to check that port handle matches a tracked object, then that tracking
+            #is occuring, as for ndi, we'll get NaN's
+            if port_handle == 0:
                 for actor in self.vtk_overlay_window.get_foreground_renderer().GetActors():
-                    print (trk)
-                    actor.SetUserMatrix(np2vtk(trk))
-        self.vtk_overlay_window.set_camera_state({"ClippingRange": [10, 800]})
+                    print (tracking[index])
+                    actor.SetUserMatrix(np2vtk(tracking[index]))
+
 
 #here's a dummy app just to test the class. Quickly
 if __name__ == '__main__':
@@ -124,8 +134,31 @@ if __name__ == '__main__':
                         {
                             "tracker type" : "aruco",
                             "debug" : True
+                        },
+                        #a list of models, either loaded or 
+                        #generated, together with their port
+                        #handles
+                        "models" : 
+                        {
+                            "tip" : { 
+                                "port_handle" : "0",
+                                "load"        : False,
+                                "filename"    : "n/a",
+                                "source"      : VTKCylinderModel(10.0, 5.0, (1.0, 0.0, 0.0), 'tip',True,1.0),
+                                },
+                            "section_1" : {
+                                "port_handle" : "1",
+                                "load"        : False,
+                                "filename"    : "n/a",
+                                "source"      : VTKCylinderModel(10.0, 3.0, (1.0, 0.0, 0.0), 'section_1',True,1.0),
+                                },
+                            "section_2" : {
+                                "port_handle" : "2",
+                                "load"        : False,
+                                "filename"    : "n/a",
+                                "source"      : VTKCylinderModel(10.0, 3.0, (1.0, 0.0, 0.0), 'section_2',True,1.0),
+                                },
                         }
-
                     }
 
     configuration_live = { "image source" : 0,
