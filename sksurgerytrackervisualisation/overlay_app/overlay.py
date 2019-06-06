@@ -38,7 +38,24 @@ def configure_tracker (config):
 def populate_models (model_config):
 
     models = []
-    return models
+    port_handles = []
+
+    cylinder = VTKCylinderModel(10.0, 5.0, (1.0, 0.0, 0.0), 'cyl00',True,1.0)
+    port_handle = 0
+    models.append(cylinder)
+    port_handles.append(port_handle)
+
+    cylinder = VTKCylinderModel(10.0, 3.0, (1.0, 0.0, 0.0), 'cyl01',True,1.0)
+    port_handle = 1
+    models.append(cylinder)
+    port_handles.append(port_handle)
+
+    cylinder = VTKCylinderModel(10.0, 3.0, (1.0, 0.0, 0.0), 'cyl02',True,1.0)
+    port_handle = 2
+    models.append(cylinder)
+    port_handles.append(port_handle)
+
+    return port_handles, models
 
 class OverlayApp(OverlayBaseApp):
     """Inherits from OverlayBaseApp, adding code to move vtk models
@@ -74,12 +91,7 @@ class OverlayApp(OverlayBaseApp):
             tracker_config = config.get("tracker config")
             self._tracker = configure_tracker(config.get("tracker config"))
 
-
-
-        cylinder = VTKCylinderModel(10.0, 5.0, (1.0, 0.0, 0.0), 'cyl01',True,1.0)
-        #models will be a list containing vtk actors and 
-        models = populate_models (config.get("models")) 
-        models.append(cylinder)
+        self._model_handles , models = populate_models (config.get("models")) 
         self.vtk_overlay_window.add_vtk_models(models)
 
     def update(self):
@@ -112,16 +124,22 @@ class OverlayApp(OverlayBaseApp):
             actor.SetOrientation(orientation)
         """
         port_handles, _, _, tracking, _ = self._tracker.get_frame()
-
-         for index, port_handle in enumerate(port_handles):
+        
+        print ("---------Frame " , len(port_handles) , " markers found ------------")
+        for ph_index, port_handle in enumerate(port_handles):
             #these will need working on, need a way to match model names with port handles
-            print (port_handle)
             #need to check that port handle matches a tracked object, then that tracking
             #is occuring, as for ndi, we'll get NaN's
-            if port_handle == 0:
-                for actor in self.vtk_overlay_window.get_foreground_renderer().GetActors():
-                    print (tracking[index])
-                    actor.SetUserMatrix(np2vtk(tracking[index]))
+            matched = False
+            for actor_index, actor in enumerate(self.vtk_overlay_window.get_foreground_renderer().GetActors()):
+                if self._model_handles[actor_index] == port_handle:
+                    print ("Found" , port_handle)
+                    actor.SetUserMatrix(np2vtk(tracking[ph_index]))
+                    matched = True
+                    break
+            if not matched:
+                print ("No match for" , port_handle)
+
 
 
 #here's a dummy app just to test the class. Quickly
