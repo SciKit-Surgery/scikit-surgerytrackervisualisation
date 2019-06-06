@@ -39,21 +39,16 @@ def populate_models (model_config):
 
     models = []
     port_handles = []
-
-    cylinder = VTKCylinderModel(10.0, 5.0, (1.0, 0.0, 0.0), 'cyl00',True,1.0)
-    port_handle = 0
-    models.append(cylinder)
-    port_handles.append(port_handle)
-
-    cylinder = VTKCylinderModel(10.0, 3.0, (1.0, 0.0, 0.0), 'cyl01',True,1.0)
-    port_handle = 1
-    models.append(cylinder)
-    port_handles.append(port_handle)
-
-    cylinder = VTKCylinderModel(10.0, 3.0, (1.0, 0.0, 0.0), 'cyl02',True,1.0)
-    port_handle = 2
-    models.append(cylinder)
-    port_handles.append(port_handle)
+   
+    for model in model_config:
+        model_temp = None
+        if not model.get("load"):
+            model_temp = model.get("source")
+            models.append(model_temp)
+            port_handles.append(model.get("port_handle"))
+        else:
+            print ("load it in")
+        print (model.get("name"))
 
     return port_handles, models
 
@@ -157,26 +152,29 @@ if __name__ == '__main__':
                         #generated, together with their port
                         #handles
                         "models" : 
-                        {
-                            "tip" : { 
-                                "port_handle" : "0",
+                        [
+                            {
+                                "name"        : "tip",
+                                "port_handle" : 0,
                                 "load"        : False,
                                 "filename"    : "n/a",
                                 "source"      : VTKCylinderModel(10.0, 5.0, (1.0, 0.0, 0.0), 'tip',True,1.0),
-                                },
-                            "section_1" : {
-                                "port_handle" : "1",
+                            },
+                            {
+                                "name"        : "section_1",
+                                "port_handle" : 1,
                                 "load"        : False,
                                 "filename"    : "n/a",
                                 "source"      : VTKCylinderModel(10.0, 3.0, (1.0, 0.0, 0.0), 'section_1',True,1.0),
-                                },
-                            "section_2" : {
-                                "port_handle" : "2",
+                            },
+                            {
+                                "name"        : "section_2",
+                                "port_handle" : 2,
                                 "load"        : False,
                                 "filename"    : "n/a",
                                 "source"      : VTKCylinderModel(10.0, 3.0, (1.0, 0.0, 0.0), 'section_2',True,1.0),
-                                },
-                        }
+                            },
+                        ]
                     }
 
     configuration_live = { "image source" : 0,
