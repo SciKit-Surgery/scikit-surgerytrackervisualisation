@@ -90,7 +90,6 @@ def populate_models (model_config):
             port_handles.append(port_handle)
         else:
             print ("load it in")
-        print (model.get("name"))
 
     return port_handles, models
 
@@ -131,6 +130,14 @@ class OverlayApp(OverlayBaseApp):
         self._model_handles , models = populate_models (config.get("models")) 
         self.vtk_overlay_window.add_vtk_models(models)
 
+        if "camera" in config:
+            camera_config = config.get("camera")
+            if "bounding box" in camera_config:
+                self.vtk_overlay_window.foreground_renderer.ResetCamera(camera_config.get("bounding box"))
+            else:
+                self.vtk_overlay_window.foreground_renderer.ResetCamera(-300,300,-300,300,-200,0)
+
+
     def update(self):
         """Update the background renderer with a new frame,
         move the model and render"""
@@ -144,8 +151,6 @@ class OverlayApp(OverlayBaseApp):
 
         self.vtk_overlay_window.set_video_image(image)
         self.vtk_overlay_window.Render()
-        self.vtk_overlay_window.foreground_renderer.ResetCamera(-300,300,-300,300,-200,0)
-        #self.vtk_overlay_window._RenderWindow.Render()
 
     def _update_tracking(self):
         """Internal method to move the rendered models in
@@ -162,7 +167,6 @@ class OverlayApp(OverlayBaseApp):
         """
         port_handles, _, _, tracking, quality = self._tracker.get_frame()
         
-        print ("---------Frame " , len(port_handles) , " markers found ------------")
         for ph_index, port_handle in enumerate(port_handles):
             #these will need working on, need a way to match model names with port handles
             #need to check that port handle matches a tracked object, then that tracking
@@ -171,7 +175,6 @@ class OverlayApp(OverlayBaseApp):
             for actor_index, actor in enumerate(self.vtk_overlay_window.get_foreground_renderer().GetActors()):
                 if self._model_handles[actor_index] == port_handle:
                     if not isnan(quality[ph_index]):
-                        print ("Found" , port_handle)
                         actor.SetUserMatrix(np2vtk(tracking[ph_index]))
                         break
 
