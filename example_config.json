@@ -1,5 +1,5 @@
 {
-	"image source" : "../../data/noisy_logo.avi",
+	"image source" : "data/noisy_logo.avi",
         "loop video"   : true,
         "tracker config" :
         {
