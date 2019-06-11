@@ -6,5 +6,6 @@ numpy
 PySide2
 vtk
 scikit-surgerycore
+scikit-surgeryutils
 scikit-surgerynditracker
 scikit-surgeryarucotracker

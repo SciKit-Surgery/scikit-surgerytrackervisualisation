@@ -8,5 +8,5 @@ from sksurgerytrackervisualisation.shapes import cone, cylinder
 # Pytest style
 
 def test_using_pytest_sksurgerytrackervisualisation():
-    run(None, None) 
+    run("example_config.json") 
 

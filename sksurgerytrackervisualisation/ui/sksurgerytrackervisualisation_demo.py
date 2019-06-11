@@ -6,10 +6,10 @@ from PySide2.QtWidgets import QApplication
 from sksurgerycore.configuration.configuration_manager import (
         ConfigurationManager
         )
-from sksurgerytrackervisualisatoin.overlay_app.overlay import OverlayApp
+from sksurgerytrackervisualisation.overlay_app.overlay import OverlayApp
 
 
-def run_demo(configfile):
+def run(configfile):
     """ Run the application """
 
     configurer = ConfigurationManager(configfile)
