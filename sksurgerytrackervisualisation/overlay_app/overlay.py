@@ -2,6 +2,7 @@
 
 """Main loop for tracking visualisation"""
 #from sksurgerytrackervisualisation.shapes import cone, cylinder
+from math import isnan
 from itertools import cycle
 from sys import version_info, exit
 from vtk.util import numpy_support
@@ -159,7 +160,7 @@ class OverlayApp(OverlayBaseApp):
             #add update the model's orientation
             actor.SetOrientation(orientation)
         """
-        port_handles, _, _, tracking, _ = self._tracker.get_frame()
+        port_handles, _, _, tracking, quality = self._tracker.get_frame()
         
         print ("---------Frame " , len(port_handles) , " markers found ------------")
         for ph_index, port_handle in enumerate(port_handles):
@@ -169,12 +170,10 @@ class OverlayApp(OverlayBaseApp):
             matched = False
             for actor_index, actor in enumerate(self.vtk_overlay_window.get_foreground_renderer().GetActors()):
                 if self._model_handles[actor_index] == port_handle:
-                    print ("Found" , port_handle)
-                    actor.SetUserMatrix(np2vtk(tracking[ph_index]))
-                    matched = True
-                    break
-            if not matched:
-                print ("No match for" , port_handle)
+                    if not isnan(quality[ph_index]):
+                        print ("Found" , port_handle)
+                        actor.SetUserMatrix(np2vtk(tracking[ph_index]))
+                        break
 
 from sksurgerycore.configuration.configuration_manager import (
         ConfigurationManager
