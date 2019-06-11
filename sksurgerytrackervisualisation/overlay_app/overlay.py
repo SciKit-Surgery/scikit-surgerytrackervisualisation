@@ -36,16 +36,57 @@ def configure_tracker (config):
     return tracker
 
 def populate_models (model_config):
+    """Parses a model configuration dictionary, returning 
+       a list of vtk actors and associated port handles
 
+       :param: model config
+               a list of dictionaries, one for each model 
+               dictionary entries are:
+               name : a descriptive name
+               port handle : the port handle of the associated tracker
+               load : True if model is to be loaded from file
+               filename : if load is true the filename to load from
+               source : supported values are cylinder, sphere, cone
+               colour : the rgb colour to use for the actor
+               height : the height of the cylinder or cone
+               radius : the diameter of the cylinder, cone, or sphere
+
+      :return: port_handles
+      :return: actors
+      """
     models = []
     port_handles = []
    
     for model in model_config:
         model_temp = None
         if not model.get("load"):
-            model_temp = model.get("source")
+            model_type = model.get("source")
+            height = 10.0
+            radius = 3.0
+            colour = (1.0, 1.0, 1.0)
+            port_handle = -1
+            port_handle = model.get("port handle")
+            if model_type == "cylinder":
+                height = model.get("height")
+                radius = model.get("radius")
+                colour = model.get("colour")
+                name = model.get("name")
+                model_temp = VTKCylinderModel(height, radius, colour, name, 
+                        True, 1.0)
+            if model_type == "sphere":
+                radius = model.get("radius")
+                colour = model.get("colour")
+                name = model.get("name")
+                model_temp = VTKSphereModel(radius, colour, name, True, 1.0)
+            if model_type == "cone":
+                height = model.get("height")
+                radius = model.get("radius")
+                colour = model.get("colour")
+                name = model.get("name")
+                model_temp = VTKCConeModel(height, radius, colour, 'name',
+                        True, 1.0)
             models.append(model_temp)
-            port_handles.append(model.get("port_handle"))
+            port_handles.append(port_handle)
         else:
             print ("load it in")
         print (model.get("name"))
@@ -135,58 +176,21 @@ class OverlayApp(OverlayBaseApp):
             if not matched:
                 print ("No match for" , port_handle)
 
+from sksurgerycore.configuration.configuration_manager import (
+        ConfigurationManager
+        )
 
 
 #here's a dummy app just to test the class. Quickly
 if __name__ == '__main__':
     app = QApplication([])
+    configurer = ConfigurationManager("../../example_config.json")
+    configuration = configurer.get_copy()
 
-    configuration = { "image source" : "../../data/noisy_logo.avi",
-                      "loop video"   : True,
-                        "tracker config" :
-                        {
-                            "tracker type" : "aruco",
-                            "debug" : True
-                        },
-                        #a list of models, either loaded or 
-                        #generated, together with their port
-                        #handles
-                        "models" : 
-                        [
-                            {
-                                "name"        : "tip",
-                                "port_handle" : 0,
-                                "load"        : False,
-                                "filename"    : "n/a",
-                                "source"      : VTKCylinderModel(10.0, 5.0, (1.0, 0.0, 0.0), 'tip',True,1.0),
-                            },
-                            {
-                                "name"        : "section_1",
-                                "port_handle" : 1,
-                                "load"        : False,
-                                "filename"    : "n/a",
-                                "source"      : VTKCylinderModel(10.0, 3.0, (1.0, 0.0, 0.0), 'section_1',True,1.0),
-                            },
-                            {
-                                "name"        : "section_2",
-                                "port_handle" : 2,
-                                "load"        : False,
-                                "filename"    : "n/a",
-                                "source"      : VTKCylinderModel(10.0, 3.0, (1.0, 0.0, 0.0), 'section_2',True,1.0),
-                            },
-                        ]
-                    }
-
-    configuration_live = { "image source" : 0,
-                      "loop video"   : False }
     viewer = OverlayApp(configuration)
-
-    #model_dir = '../models'
-    #viewer.add_vtk_models_from_dir(model_dir)
 
     viewer.start()
 
-   #start the application
     exit(app.exec_())
 
 

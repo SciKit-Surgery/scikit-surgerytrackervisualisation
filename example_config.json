@@ -1,0 +1,57 @@
+{
+	"image source" : "../../data/noisy_logo.avi",
+        "loop video"   : true,
+        "tracker config" :
+        {
+        	"tracker type" : "aruco",
+                "debug" : true
+        },
+                        
+	"models" : [
+                   {
+                   	"name"        : "tip",
+                        "port handle" : 0,
+                        "load"        : false,
+                        "filename"    : "n/a",
+			"source"      : "cylinder",
+			"colour"      : [1.0, 0.0, 0.0],
+			"height"      : 10.0,
+			"radius"      : 5.0
+                   },
+                   {
+                        "name"        : "section_1",
+                        "port handle" : 1,
+                        "load"        : false,
+                        "filename"    : "n/a",
+			"source"      : "cylinder",
+			"colour"      : [1.0, 0.0, 0.0],
+			"height"      : 10.0,
+			"radius"      : 3.0
+                   },
+                   {
+                        "name"        : "section_2",
+                        "port handle" : 2,
+                        "load"        : false,
+                        "filename"    : "n/a",
+			"source"      : "cylinder",
+			"colour"      : [1.0, 0.0, 0.0],
+			"height"      : 10.0,
+			"radius"      : 3.0
+                   },
+		   {
+			"name"        : "anatomy_0",
+			"port handle" : -1,
+			"load"        : "true",
+			"filename"    : "data/example.vtp",
+			"model to world" : "data/example_mtw.4x4"
+		   }
+
+                   ],
+	"camera" : {
+			"origin" 	  : [0.0, 0.0, 0.0],
+			"normal" 	  : [0.0, 0.0, 1.0],
+			"clipping plane " : [0.0, 0.0, 0.0, 0.0, 0.0, 1000.0]
+	}
+
+}
+
