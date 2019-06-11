@@ -5,7 +5,7 @@
 
 import argparse
 from sksurgerytrackervisualisation import __version__
-from sksurgerytrackervisualisation.application.sksurgerytrackervisualisation import run
+from sksurgerytrackervisualisation.ui.sksurgerytrackervisualisation_demo import run
 
 
 def main(args=None):

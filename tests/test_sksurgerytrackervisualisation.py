@@ -2,7 +2,7 @@
 
 """scikit-surgerytrackervisualisation tests"""
 
-from sksurgerytrackervisualisation.application.sksurgerytrackervisualisation import run
+from sksurgerytrackervisualisation.ui.sksurgerytrackervisualisation_demo import run
 from sksurgerytrackervisualisation.shapes import cone, cylinder
 
 # Pytest style
