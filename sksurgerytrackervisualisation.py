@@ -2,7 +2,8 @@
 #  -*- coding: utf-8 -*-
 import sys
 
-from scikit-surgerytrackervisualisation.ui.scikit-surgerytrackervisualisation_command_line import main
+from sksurgerytrackervisualisation.ui.sksurgerytrackervisualisation_cl \
+        import main
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv[1:]))

@@ -8,33 +8,31 @@ import sksurgeryvtk.models.vtk_surface_model as vbs
 
 # pylint: disable=no-member
 
-class VTKCylinderModel(vbs.VTKSurfaceModel):
+class VTKSphereModel(vbs.VTKSurfaceModel):
     """
-    Class to create a VTK surface model of a cylinder.
+    Class to create a VTK surface model of a sphere.
     """
-    def __init__(self, height, radius, colour, name, visibility=True,
+    def __init__(self, radius, colour, name, visibility=True,
                  opacity=1.0):
         """
         Creates a new surface model.
 
-        :param height: the height of the cylinder
-        :param diameter: the radius of the cylinder
+        :param diameter: the radius of the sphere
         :param name: a name for the model
         :param colour: (R,G,B) where each are floats [0-1]
         :param visibility: boolean, True|False
         :param opacity: float [0,1]
         """
 
-        super(VTKCylinderModel, self).__init__(None, colour, visibility,
-                                               opacity)
+        super(VTKSphereModel, self).__init__(None, colour, visibility,
+                                             opacity)
         self.name = name
 
-        cyl = vtk.vtkCylinderSource()
-        cyl.SetResolution(88)
-        cyl.SetRadius(radius)
-        cyl.SetHeight(height)
-        cyl.Update()
-        self.source = cyl.GetOutput()
+        sphere = vtk.vtkSphereSource()
+        sphere.SetResolution(88)
+        sphere.SetRadius(radius)
+        sphere.Update()
+        self.source = sphere.GetOutput()
 
         #this is from super init, have to redo as we now have data
         self.normals = None
