@@ -4,44 +4,56 @@
 #from sksurgerytrackervisualisation.shapes import cone, cylinder
 from math import isnan
 from itertools import cycle
-from sys import version_info, exit
-from vtk.util import numpy_support
+from sys import version_info
 import vtk
-from PySide2.QtWidgets import QApplication
 from sksurgeryutils.common_overlay_apps import OverlayBaseApp
 from sksurgerynditracker.nditracker import NDITracker
 from sksurgeryarucotracker.arucotracker import ArUcoTracker
 from sksurgerytrackervisualisation.shapes.cylinder import VTKCylinderModel
+from sksurgerytrackervisualisation.shapes.cone import VTKConeModel
+from sksurgerytrackervisualisation.shapes.sphere import VTKSphereModel
 
 def np2vtk(mat):
+    """
+    Converts a Numpy array to a vtk matrix
+    :param: the number array, should be 4x4
+    :return: a vtk 4x4 matrix
+    :raises: ValueError when matrix is not 4x4
+    """
     if mat.shape == (4, 4):
         obj = vtk.vtkMatrix4x4()
         for i in range(4):
             for j in range(4):
                 obj.SetElement(i, j, mat[i, j])
         return obj
+    raise ValueError('Array must be 4x4')
 
-
-def configure_tracker (config):
+def configure_tracker(config):
+    """
+    Configures the tracking system.
+    :param: A dictionary containing configuration data
+    :return: The tracker object
+    :raises: KeyError if no tracker entry in config
+    """
     if "tracker type" not in config:
-        raise KeyError ('Tracker configuration requires tracker type')
+        raise KeyError('Tracker configuration requires tracker type')
 
     tracker_type = config.get("tracker type")
     tracker = None
     if tracker_type in ("vega", "polaris", "aurora", "dummy"):
         tracker = NDITracker(config)
-    if tracker_type in ("aruco"):
+    if tracker_type in "aruco":
         tracker = ArUcoTracker(config)
 
     tracker.start_tracking()
     return tracker
 
-def populate_models (model_config):
-    """Parses a model configuration dictionary, returning 
+def populate_models(model_config):
+    """Parses a model configuration dictionary, returning
        a list of vtk actors and associated port handles
 
        :param: model config
-               a list of dictionaries, one for each model 
+               a list of dictionaries, one for each model
                dictionary entries are:
                name : a descriptive name
                port handle : the port handle of the associated tracker
@@ -57,7 +69,7 @@ def populate_models (model_config):
       """
     models = []
     port_handles = []
-   
+
     for model in model_config:
         model_temp = None
         if not model.get("load"):
@@ -72,8 +84,8 @@ def populate_models (model_config):
                 radius = model.get("radius")
                 colour = model.get("colour")
                 name = model.get("name")
-                model_temp = VTKCylinderModel(height, radius, colour, name, 
-                        True, 1.0)
+                model_temp = VTKCylinderModel(height, radius, colour, name,
+                                              True, 1.0)
             if model_type == "sphere":
                 radius = model.get("radius")
                 colour = model.get("colour")
@@ -84,12 +96,12 @@ def populate_models (model_config):
                 radius = model.get("radius")
                 colour = model.get("colour")
                 name = model.get("name")
-                model_temp = VTKCConeModel(height, radius, colour, 'name',
-                        True, 1.0)
+                model_temp = VTKConeModel(height, radius, colour, 'name',
+                                          True, 1.0)
             models.append(model_temp)
             port_handles.append(port_handle)
         else:
-            print ("load it in")
+            print("load it in")
 
     return port_handles, models
 
@@ -109,7 +121,7 @@ class OverlayApp(OverlayBaseApp):
                 #super doesn't work the same in py2.7
                 OverlayBaseApp.__init__(self, config.get("image source"))
         else:
-            raise KeyError ("Configuration must contain a video source")
+            raise KeyError("Configuration must contain a video source")
 
         self._video_loop_buffer = []
         video_buffer = []
@@ -124,25 +136,26 @@ class OverlayApp(OverlayBaseApp):
 
         self._tracker = None
         if "tracker config" in config:
-            tracker_config = config.get("tracker config")
             self._tracker = configure_tracker(config.get("tracker config"))
 
-        self._model_handles , models = populate_models (config.get("models")) 
+        self._model_handles, models = populate_models(config.get("models"))
         self.vtk_overlay_window.add_vtk_models(models)
 
         if "camera" in config:
             camera_config = config.get("camera")
             if "bounding box" in camera_config:
-                self.vtk_overlay_window.foreground_renderer.ResetCamera(camera_config.get("bounding box"))
+                self.vtk_overlay_window.foreground_renderer.ResetCamera(
+                    camera_config.get("bounding box"))
             else:
-                self.vtk_overlay_window.foreground_renderer.ResetCamera(-300,300,-300,300,-200,0)
+                self.vtk_overlay_window.foreground_renderer.ResetCamera(
+                    -300, 300, -300, 300, -200, 0)
 
 
     def update(self):
         """Update the background renderer with a new frame,
         move the model and render"""
         if  self._video_loop_buffer:
-            image = next (self._video_loop_buffer)
+            image = next(self._video_loop_buffer)
         else:
             _, image = self.video_source.read()
 
@@ -166,33 +179,12 @@ class OverlayApp(OverlayBaseApp):
             actor.SetOrientation(orientation)
         """
         port_handles, _, _, tracking, quality = self._tracker.get_frame()
-        
+
         for ph_index, port_handle in enumerate(port_handles):
-            #these will need working on, need a way to match model names with port handles
-            #need to check that port handle matches a tracked object, then that tracking
-            #is occuring, as for ndi, we'll get NaN's
-            matched = False
-            for actor_index, actor in enumerate(self.vtk_overlay_window.get_foreground_renderer().GetActors()):
+            for actor_index, actor in enumerate(
+                    self.vtk_overlay_window.get_foreground_renderer().
+                    GetActors()):
                 if self._model_handles[actor_index] == port_handle:
                     if not isnan(quality[ph_index]):
                         actor.SetUserMatrix(np2vtk(tracking[ph_index]))
                         break
-
-from sksurgerycore.configuration.configuration_manager import (
-        ConfigurationManager
-        )
-
-
-#here's a dummy app just to test the class. Quickly
-if __name__ == '__main__':
-    app = QApplication([])
-    configurer = ConfigurationManager("../../example_config.json")
-    configuration = configurer.get_copy()
-
-    viewer = OverlayApp(configuration)
-
-    viewer.start()
-
-    exit(app.exec_())
-
-
