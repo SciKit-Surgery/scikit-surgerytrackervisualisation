@@ -3,8 +3,8 @@
 # confused with the software requirements, which are listed in
 # doc/requirements.rst
 numpy
-PySide2
 vtk
+PySide2
 scikit-surgerycore
 scikit-surgeryutils
 scikit-surgerynditracker

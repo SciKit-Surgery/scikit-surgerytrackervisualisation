@@ -2,11 +2,16 @@
 
 """scikit-surgerytrackervisualisation tests"""
 
-from sksurgerytrackervisualisation.ui.sksurgerytrackervisualisation_demo import run
+from sksurgerytrackervisualisation.overlay_app.overlay import populate_models
+from sksurgerycore.configuration.configuration_manager import \
+        ConfigurationManager
 from sksurgerytrackervisualisation.shapes import cone, cylinder
 
 # Pytest style
 
-def test_using_pytest_sksurgerytrackervisualisation():
-    run("example_config.json") 
+def test_populate_models():
+
+    configurer = ConfigurationManager("example_config.json")
+    configuration = configurer.get_copy()
+    populate_models(configuration.get("models"))
 
