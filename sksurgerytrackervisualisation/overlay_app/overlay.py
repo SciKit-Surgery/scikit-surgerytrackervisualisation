@@ -9,7 +9,7 @@ import vtk
 from sksurgeryutils.common_overlay_apps import OverlayBaseApp
 from sksurgerynditracker.nditracker import NDITracker
 from sksurgeryarucotracker.arucotracker import ArUcoTracker
-from sksurgerytrackervisualisation.shapes.cylinder import VTKCylinderModel
+from sksurgeryvtk.models.vtk_cylinder_model import VTKCylinderModel
 from sksurgerytrackervisualisation.shapes.cone import VTKConeModel
 from sksurgerytrackervisualisation.shapes.sphere import VTKSphereModel
 
@@ -77,6 +77,9 @@ def populate_models(model_config):
             height = 10.0
             radius = 3.0
             colour = (1.0, 1.0, 1.0)
+            angle = 90.0
+            orientation = (1.0, 0.0, 0.0)
+            resolution = 88
             port_handle = -1
             port_handle = model.get("port handle")
             if model_type == "cylinder":
@@ -84,7 +87,15 @@ def populate_models(model_config):
                 radius = model.get("radius")
                 colour = model.get("colour")
                 name = model.get("name")
+                if "angle" in model:
+                    angle = model.get("angle")
+                if "orientation" in model:
+                    orientation = model.get("orientation")
+                if "resolution" in model:
+                    resolution = model.get("resolution")
+
                 model_temp = VTKCylinderModel(height, radius, colour, name,
+                                              angle, orientation, resolution,
                                               True, 1.0)
             if model_type == "sphere":
                 radius = model.get("radius")
