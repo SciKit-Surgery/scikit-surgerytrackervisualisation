@@ -54,6 +54,7 @@ setup(
         'six>=1.10',
         'numpy>=1.11'
         'scikit-surgeryvtk>=0.9.0',
+        'scikit-surgeryimage>=0.6.0',
         'scikit-surgerycore',
         'scikit-surgeryutils',
         'scikit-surgerynditracker',
