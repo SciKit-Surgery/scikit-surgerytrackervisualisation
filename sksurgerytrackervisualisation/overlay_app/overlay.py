@@ -25,7 +25,6 @@ class OverlayApp(OverlayBaseApp):
             self.img = None
             self.timer = None
             self.save_frame = None
-            pass
 
         if "image" in config:
             self._configure_background_image(config.get("image"))

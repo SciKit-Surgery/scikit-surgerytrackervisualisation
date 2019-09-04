@@ -1,3 +1,6 @@
+"""
+Algorithms used by the trackervisualisation module
+"""
 import vtk
 from sksurgerynditracker.nditracker import NDITracker
 from sksurgeryarucotracker.arucotracker import ArUcoTracker
@@ -110,5 +113,3 @@ def populate_models(model_config):
             print("load it in")
 
     return port_handles, models
-
-
