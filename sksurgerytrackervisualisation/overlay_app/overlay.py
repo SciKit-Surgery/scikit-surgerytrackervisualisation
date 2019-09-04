@@ -4,12 +4,13 @@
 #from sksurgerytrackervisualisation.shapes import cone, cylinder
 from math import isnan
 from itertools import cycle
-from sys import version_info
 import vtk
+from cv2 import VideoCapture
 from sksurgeryutils.common_overlay_apps import OverlayBaseApp
 from sksurgerynditracker.nditracker import NDITracker
 from sksurgeryarucotracker.arucotracker import ArUcoTracker
 from sksurgeryvtk.models.vtk_cylinder_model import VTKCylinderModel
+from sksurgeryimage.utilities.weisslogo import WeissLogo
 from sksurgerytrackervisualisation.shapes.cone import VTKConeModel
 from sksurgerytrackervisualisation.shapes.sphere import VTKSphereModel
 
@@ -27,6 +28,7 @@ def np2vtk(mat):
                 obj.SetElement(i, j, mat[i, j])
         return obj
     raise ValueError('Array must be 4x4')
+
 
 def configure_tracker(config):
     """
@@ -124,26 +126,12 @@ class OverlayApp(OverlayBaseApp):
         """Overides overlay base app's init, to initialise the
         external tracking system. Together with a video source"""
 
-        if "image source" in config:
-            #and call the constructor for the base class
-            if version_info > (3, 0):
-                super().__init__(config.get("image source"))
-            else:
-                #super doesn't work the same in py2.7
-                OverlayBaseApp.__init__(self, config.get("image source"))
+        super().__init__(None)
+        if "image" in config:
+            self._configure_background_image(config.get("image"))
         else:
-            raise KeyError("Configuration must contain a video source")
-
-        self._video_loop_buffer = []
-        video_buffer = []
-        if "loop video" in config:
-            if config.get("loop video"):
-                ret, image = self.video_source.read()
-                while ret:
-                    video_buffer.append(image)
-                    ret, image = self.video_source.read()
-
-                self._video_loop_buffer = cycle(video_buffer)
+            default_config = {"logo" : True}
+            self._configure_background_image(default_config)
 
         self._tracker = None
         if "tracker config" in config:
@@ -199,3 +187,35 @@ class OverlayApp(OverlayBaseApp):
                     if not isnan(quality[ph_index]):
                         actor.SetUserMatrix(np2vtk(tracking[ph_index]))
                         break
+
+    def _configure_background_image(self, config):
+        """
+        Configures the overlay window with some sort of
+        background image.
+        :param: a configuration dictionary
+        """
+        self._video_loop_buffer = []
+        video_buffer = []
+        if "source" in config:
+            self.source = VideoCapture(config.get("source"))
+            if not self.source.isOpened():
+                raise RuntimeError("Failed to open Video camera:"
+                                   + str(config.get("source")))
+
+            self.source_name = config.get("source")
+
+            if "loop" in config:
+                if config.get("loop"):
+                    ret, image = self.video_source.read()
+                    while ret:
+                        video_buffer.append(image)
+                        ret, image = self.video_source.read()
+
+                self._video_loop_buffer = cycle(video_buffer)
+        else:
+            if config.get("blank") or config.get("logo"):
+                if config.get("logo"):
+                    self._logo_maker = WeissLogo()
+            else:
+                raise KeyError("Configuration must contain a" +
+                               "video source, blank, or logo")

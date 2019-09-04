@@ -1,6 +1,12 @@
 {
-	"image source" : "data/noisy_logo.avi",
-        "loop video"   : true,
+	"image" :
+	{
+		"image" 	: "data/noisy_logo.avi",
+        	"loop"   	: true,
+		"logo" 		: false,
+		"blank" 	: false
+	},
+
         "tracker config" :
         {
         	"tracker type" : "aruco",
