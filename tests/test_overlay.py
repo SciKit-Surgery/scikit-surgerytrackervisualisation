@@ -6,83 +6,6 @@ from sksurgerytrackervisualisation.overlay_app.overlay import OverlayApp
 
 # Pytest style
 
-def test_video(setup_qt):
-    """
-    Test that the overlay function works when using recorded backdrop
-    """
-    _ = setup_qt
-    configuration = {
-        "image" :
-        {
-            "source" 	: "data/noisy_logo.avi",
-            "loop"   	: True,
-            "logo" 	: False,
-            "blank" 	: False
-        },
-        "tracker config" :
-        {
-            "tracker type" : "aruco",
-            "debug"	   : False,
-            "video source" : "data/aruco_tag.avi"
-        },
-        "models" : [
-            {
-                "name"        : "tip",
-                "port handle" : 0,
-                "load"        : False,
-                "filename"    : "n/a",
-                "source"      : "cylinder",
-                "colour"      : [1.0, 0.0, 0.0],
-                "height"      : 50.0,
-                "radius"      : 10.0,
-                "angle"       : 90.0,
-                "orientation" : [0.0, 0.0, 1.0]
-            },
-        ]
-    }
-    overlay = OverlayApp(configuration)
-    overlay.update()
-
-
-def test_video_no_loop(setup_qt):
-    """
-    Test that the overlay function works when using recorded backdrop
-    without looping
-    """
-    _ = setup_qt
-    configuration = {
-        "image" :
-        {
-            "source" 	: "data/noisy_logo.avi",
-            "loop"   	: False,
-            "logo" 	: False,
-            "blank" 	: False
-        },
-        "tracker config" :
-        {
-            "tracker type" : "aruco",
-            "debug"	   : False,
-            "video source" : "data/aruco_tag.avi"
-        },
-        "models" : [
-            {
-                "name"        : "tip",
-                "port handle" : 0,
-                "load"        : False,
-                "filename"    : "n/a",
-                "source"      : "cylinder",
-                "colour"      : [1.0, 0.0, 0.0],
-                "height"      : 50.0,
-                "radius"      : 10.0,
-                "angle"       : 90.0,
-                "orientation" : [0.0, 0.0, 1.0]
-            },
-        ]
-    }
-    overlay = OverlayApp(configuration)
-    overlay.update()
-
-
 def test_default_image(setup_qt):
     """
     Test that the overlay function works when no image config
@@ -110,7 +33,8 @@ def test_default_image(setup_qt):
             },
         ]
     }
-    _ = OverlayApp(configuration)
+    overlay = OverlayApp(configuration)
+    overlay.update()
 
 
 def test_with_camera(setup_qt):
