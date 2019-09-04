@@ -1,7 +1,7 @@
 {
 	"image" :
 	{
-		"image" 	: "data/noisy_logo.avi",
+		"source" 	: "data/noisy_logo.avi",
         	"loop"   	: true,
 		"logo" 		: false,
 		"blank" 	: false

@@ -125,8 +125,15 @@ class OverlayApp(OverlayBaseApp):
     def __init__(self, config):
         """Overides overlay base app's init, to initialise the
         external tracking system. Together with a video source"""
+        try:
+            super().__init__(None)
+        except RuntimeError:
+            self.update_rate = 30
+            self.img = None
+            self.timer = None
+            self.save_frame = None
+            pass
 
-        super().__init__(None)
         if "image" in config:
             self._configure_background_image(config.get("image"))
         else:
@@ -206,10 +213,10 @@ class OverlayApp(OverlayBaseApp):
 
             if "loop" in config:
                 if config.get("loop"):
-                    ret, image = self.video_source.read()
+                    ret, image = self.source.read()
                     while ret:
                         video_buffer.append(image)
-                        ret, image = self.video_source.read()
+                        ret, image = self.source.read()
 
                 self._video_loop_buffer = cycle(video_buffer)
         else:
