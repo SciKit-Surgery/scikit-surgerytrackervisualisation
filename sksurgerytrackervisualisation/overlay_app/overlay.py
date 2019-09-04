@@ -55,7 +55,7 @@ class OverlayApp(OverlayBaseApp):
         if  self._video_loop_buffer:
             image = next(self._video_loop_buffer)
         else:
-            _, image = self.video_source.read()
+            _, image = self.source.read()
 
         #add a method to move the rendered models
         self._update_tracking()
@@ -93,8 +93,8 @@ class OverlayApp(OverlayBaseApp):
         background image.
         :param: a configuration dictionary
         """
+
         self._video_loop_buffer = []
-        video_buffer = []
         if "source" in config:
             self.source = VideoCapture(config.get("source"))
             if not self.source.isOpened():
@@ -105,12 +105,13 @@ class OverlayApp(OverlayBaseApp):
 
             if "loop" in config:
                 if config.get("loop"):
+                    video_buffer = []
                     ret, image = self.source.read()
                     while ret:
                         video_buffer.append(image)
                         ret, image = self.source.read()
 
-                self._video_loop_buffer = cycle(video_buffer)
+                    self._video_loop_buffer = cycle(video_buffer)
         else:
             if config.get("blank") or config.get("logo"):
                 if config.get("logo"):
