@@ -4,14 +4,15 @@
 
 from sksurgerycore.configuration.configuration_manager import \
         ConfigurationManager
-from sksurgerytrackervisualisation.overlay_app.overlay import populate_models
+from sksurgerytrackervisualisation.overlay_app.overlay import OverlayApp
 
 # Pytest style
 
-def test_populate_models():
+def test_overlay_example(setup_qt):
     """
     Test that the populate models function works
     """
+    _ = setup_qt
     configurer = ConfigurationManager("example_config.json")
     configuration = configurer.get_copy()
-    populate_models(configuration.get("models"))
+    _ = OverlayApp(configuration)
