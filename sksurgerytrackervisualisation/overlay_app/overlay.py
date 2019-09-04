@@ -3,12 +3,11 @@
 """Main loop for tracking visualisation"""
 #from sksurgerytrackervisualisation.shapes import cone, cylinder
 from math import isnan
-from itertools import cycle
-from cv2 import VideoCapture
-from sksurgeryimage.utilities.weisslogo import WeissLogo
 from sksurgeryutils.common_overlay_apps import OverlayBaseApp
 from sksurgerytrackervisualisation.algorithms.algorithms import (
         np2vtk, configure_tracker, populate_models)
+from sksurgerytrackervisualisation.algorithms.background_image import \
+        OverlayBackground
 
 
 class OverlayApp(OverlayBaseApp):
@@ -27,10 +26,10 @@ class OverlayApp(OverlayBaseApp):
             self.save_frame = None
 
         if "image" in config:
-            self._configure_background_image(config.get("image"))
+            self.bg_image = OverlayBackground(config.get("image"))
         else:
             default_config = {"logo" : True}
-            self._configure_background_image(default_config)
+            self.bg_image = OverlayBackground(default_config)
 
         self._tracker = None
         if "tracker config" in config:
@@ -52,10 +51,7 @@ class OverlayApp(OverlayBaseApp):
     def update(self):
         """Update the background renderer with a new frame,
         move the model and render"""
-        if  self._video_loop_buffer:
-            image = next(self._video_loop_buffer)
-        else:
-            _, image = self.source.read()
+        image = self.bg_image.next_image()
 
         #add a method to move the rendered models
         self._update_tracking()
@@ -86,36 +82,3 @@ class OverlayApp(OverlayBaseApp):
                     if not isnan(quality[ph_index]):
                         actor.SetUserMatrix(np2vtk(tracking[ph_index]))
                         break
-
-    def _configure_background_image(self, config):
-        """
-        Configures the overlay window with some sort of
-        background image.
-        :param: a configuration dictionary
-        """
-
-        self._video_loop_buffer = []
-        if "source" in config:
-            self.source = VideoCapture(config.get("source"))
-            if not self.source.isOpened():
-                raise RuntimeError("Failed to open Video camera:"
-                                   + str(config.get("source")))
-
-            self.source_name = config.get("source")
-
-            if "loop" in config:
-                if config.get("loop"):
-                    video_buffer = []
-                    ret, image = self.source.read()
-                    while ret:
-                        video_buffer.append(image)
-                        ret, image = self.source.read()
-
-                    self._video_loop_buffer = cycle(video_buffer)
-        else:
-            if config.get("blank") or config.get("logo"):
-                if config.get("logo"):
-                    self._logo_maker = WeissLogo()
-            else:
-                raise KeyError("Configuration must contain a" +
-                               "video source, blank, or logo")
