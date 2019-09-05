@@ -1,0 +1,46 @@
+digraph prof {
+	ratio = fill;
+	node [style=filled];
+	"scikit-surgerytrackervisualisation" -> numpy;
+	"scikit-surgerytrackervisualisation" -> "scikit-surgeryvtk" [color="0.515 0.762 0.762"];
+	"scikit-surgerytrackervisualisation" -> "scikit-surgeryimage" [color="0.515 0.762 0.762"];
+	"scikit-surgerytrackervisualisation" -> "scikit-surgerycore" [color="0.515 0.762 0.762"];
+	"scikit-surgerytrackervisualisation" -> "scikit-surgeryutils" [color="0.515 0.762 0.762"];
+	"scikit-surgerytrackervisualisation" -> "scikit-surgerynditracker" [color="0.515 0.762 0.762"];
+	"scikit-surgerytrackervisualisation" -> "scikit-surgeryarucotracker" [color="0.515 0.762 0.762"];
+	
+	"scikit-surgeryvtk" -> "numpy";
+	"scikit-surgeryvtk" -> "opencv-contrib-python";
+	"scikit-surgeryvtk" -> "vtk";
+	"scikit-surgeryvtk" -> "PySide2";
+	"scikit-surgeryvtk" -> "scikit-surgeryimage" [color="0.515 0.762 0.762"];
+	"scikit-surgeryvtk" -> "scikit-surgerycore" [color="0.515 0.762 0.762"];
+
+	"scikit-surgeryimage" -> "numpy";
+	"scikit-surgeryimage" -> "opencv-contrib-python";
+	"scikit-surgeryimage" -> "scikit-surgerycore" [color="0.515 0.762 0.762"];
+
+	"scikit-surgerycore" -> "numpy";
+	
+	"scikit-surgeryutils" -> "numpy";
+	"scikit-surgeryutils" -> "opencv-contrib-python";
+	"scikit-surgeryutils" -> "PySide2";
+	"scikit-surgeryutils" -> "scikit-surgeryimage" [color="0.515 0.762 0.762"];
+	"scikit-surgeryutils" -> "scikit-surgeryvtk" [color="0.515 0.762 0.762"];
+
+	"scikit-surgerynditracker" -> ndicapi;
+	"scikit-surgerynditracker" -> numpy;
+
+	"scikit-surgeryarucotracker" -> numpy;
+	"scikit-surgeryarucotracker" -> "opencv-contrib-python";
+	"scikit-surgeryarucotracker" -> "scikit-surgerycore" [color="0.515 0.762 0.762"];
+
+"scikit-surgerytrackervisualisation" [color="0.515 0.762 0.762"];
+"scikit-surgeryvtk" [color="0.515 0.762 0.762"];
+"scikit-surgeryutils"  [color="0.515 0.762 0.762"]; 
+"scikit-surgerynditracker" [color="0.515 0.762 0.762"];
+"scikit-surgeryarucotracker"[color="0.515 0.762 0.762"];
+"scikit-surgeryimage"[color="0.515 0.762 0.762"];
+"scikit-surgerycore"[color="0.515 0.762 0.762"];
+} 
+

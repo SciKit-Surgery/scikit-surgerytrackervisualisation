@@ -5,6 +5,7 @@ Contents
 .. toctree::
   :maxdepth: 1
 
+  dependency_graph
   requirements
   Module Contents <modules>
 
