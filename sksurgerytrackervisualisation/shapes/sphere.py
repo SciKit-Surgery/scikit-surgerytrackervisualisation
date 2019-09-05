@@ -29,26 +29,17 @@ class VTKSphereModel(vbs.VTKSurfaceModel):
         self.name = name
 
         sphere = vtk.vtkSphereSource()
-        sphere.SetResolution(88)
+        sphere.SetThetaResolution(36)
+        sphere.SetPhiResolution(36)
         sphere.SetRadius(radius)
         sphere.Update()
         self.source = sphere.GetOutput()
 
         #this is from super init, have to redo as we now have data
-        self.normals = None
-        if self.source.GetPointData().GetNormals() is None:
-            self.normals = vtk.vtkPolyDataNormals()
-            self.normals.SetInputData(self.source)
-            self.normals.SetAutoOrientNormals(True)
-            self.normals.SetFlipNormals(False)
         self.transform = vtk.vtkTransform()
         self.transform.Identity()
         self.transform_filter = vtk.vtkTransformPolyDataFilter()
-        if self.normals is None:
-            self.transform_filter.SetInputData(self.source)
-        else:
-            self.transform_filter.SetInputConnection(
-                self.normals.GetOutputPort())
+        self.transform_filter.SetInputData(self.source)
         self.transform_filter.SetTransform(self.transform)
         self.mapper = vtk.vtkPolyDataMapper()
         self.mapper.SetInputConnection(self.transform_filter.GetOutputPort())
