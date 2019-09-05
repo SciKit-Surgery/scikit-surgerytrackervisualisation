@@ -6,8 +6,7 @@
 Dependency Graph
 ===============================================
 
-.. image:: dependency_graph.png
-   :height: 400px
-   :alt: The dependency graph
+.. graphviz:: dependency_graph.dot
+   :caption: The dependency graph
    :align: center
 
