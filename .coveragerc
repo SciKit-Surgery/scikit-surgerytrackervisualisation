@@ -3,4 +3,6 @@ omit =
         ./sksurgerytrackervisualisation/_version.py
         ./sksurgerytrackervisualisation/__init__.py
         ./sksurgerytrackervisualisation/__main__.py
-        ./sksurgerytrackervisualisation/ui/scikit-surgerytrackervisualisation_command_line.py
+        ./sksurgerytrackervisualisation/ui/sksurgerytrackervisualisation_cl.py
+        ./sksurgerytrackervisualisation/ui/sksurgerytrackervisualisation_demo.py
+        ./sksurgerytrackervisualisation/ui/__init__.py
