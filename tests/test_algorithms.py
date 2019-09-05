@@ -4,8 +4,6 @@
 
 import numpy as np
 import pytest
-from sksurgerycore.configuration.configuration_manager import \
-        ConfigurationManager
 import sksurgerytrackervisualisation.algorithms.algorithms as tva
 
 # Pytest style
@@ -67,6 +65,52 @@ def test_populate_models():
     """
     Test that the populate models function works
     """
-    configurer = ConfigurationManager("example_config.json")
-    configuration = configurer.get_copy()
+    configuration = {
+        "models" : [
+            {
+                "name"        : "tip",
+                "port handle" : 0,
+                "load"        : False,
+                "filename"    : "n/a",
+                "source"      : "sphere",
+                "colour"      : [1.0, 0.0, 0.0],
+                "radius"      : 10.0,
+                "angle"       : 90.0,
+                "orientation" : [0.0, 0.0, 1.0]
+            },
+            {
+                "name"        : "section_1",
+                "port handle" : 1,
+                "load"        : False,
+                "filename"    : "n/a",
+                "source"      : "cylinder",
+                "colour"      : [1.0, 0.0, 0.0],
+                "height"      : 50.0,
+                "radius"      : 6.0,
+                "angle"       : 0.0,
+                "resolution"  : 18,
+                "orientation" : [0.0, 0.0, 1.0]
+            },
+            {
+                "name"        : "section_2",
+                "port handle" : 2,
+                "load"        : False,
+                "filename"    : "n/a",
+                "source"      : "cone",
+                "colour"      : [1.0, 0.0, 0.0],
+                "height"      : 50.0,
+                "radius"      : 6.0,
+                "resolution"  : 10,
+                "orientation" : [0.0, 0.0, 1.0]
+            },
+            {
+                "name"        : "anatomy_0",
+                "port handle" : -1,
+                "load"        : "true",
+                "filename"    : "data/example.vtp",
+                "model to world" : "data/example_mtw.4x4"
+            }
+        ]
+    }
+
     tva.populate_models(configuration.get("models"))
