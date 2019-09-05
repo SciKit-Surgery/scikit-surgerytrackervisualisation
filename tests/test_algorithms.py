@@ -57,7 +57,10 @@ def test_config_tracker_aruco():
     """
     Tests that configure_tracker for ndi, using dummy
     """
-    config = {"tracker type" : "aruco"}
+    config = {
+        "tracker type" : "aruco",
+        "video source" : "data/aruco_tag.avi"
+        }
     tva.configure_tracker(config)
 
 
