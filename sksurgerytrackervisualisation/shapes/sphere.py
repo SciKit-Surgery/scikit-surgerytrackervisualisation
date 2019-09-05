@@ -29,7 +29,8 @@ class VTKSphereModel(vbs.VTKSurfaceModel):
         self.name = name
 
         sphere = vtk.vtkSphereSource()
-        sphere.SetResolution(88)
+        sphere.SetThetaResolution(36)
+        sphere.SetPhiResolution(36)
         sphere.SetRadius(radius)
         sphere.Update()
         self.source = sphere.GetOutput()
