@@ -2,6 +2,7 @@
 
 
 """Tracker visualisation demo module"""
+import sys
 from PySide2.QtWidgets import QApplication
 from sksurgerycore.configuration.configuration_manager import (
         ConfigurationManager
@@ -23,4 +24,4 @@ def run(configfile):
     viewer.start()
 
    #start the application
-    exit(app.exec_())
+    sys.exit(app.exec_())
