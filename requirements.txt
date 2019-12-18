@@ -2,9 +2,9 @@
 # It is used by pip to manage software dependencies. It is not to be
 # confused with the software requirements, which are listed in
 # doc/requirements.rst
-numpy
-vtk
+numpy>=1.11
 PySide2
+vtk
 scikit-surgeryvtk>=0.9.0
 scikit-surgeryimage>=0.6.0
 scikit-surgerycore

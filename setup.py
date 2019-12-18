@@ -51,7 +51,9 @@ setup(
     ),
 
     install_requires=[
-        'numpy>=1.11'
+        'numpy>=1.11',
+        'vtk',
+        'PySide2',
         'scikit-surgeryvtk>=0.9.0',
         'scikit-surgeryimage>=0.6.0',
         'scikit-surgerycore',
