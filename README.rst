@@ -1,5 +1,5 @@
 scikit-surgerytrackervisualisation
-===============================
+==================================
 
 .. image:: https://weisslab.cs.ucl.ac.uk/WEISS/SoftwareRepositories/SNAPPY/scikit-surgerytrackervisualisation/raw/master/project-icon.png
    :height: 128px
