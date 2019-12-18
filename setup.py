@@ -14,7 +14,7 @@ setup(
     name='scikit-surgerytrackervisualisation',
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
-    description='scikit-surgerytrackervisualisation provides a simple live visualisation of tracking data from a scikit-surgerytracker source',
+    description='Provides a live visualisation of tracking data from a scikit-surgerytracker source',
     long_description=long_description,
     long_description_content_type='text/x-rst',
     url='https://weisslab.cs.ucl.ac.uk/WEISS/SoftwareRepositories/SNAPPY/scikit-surgerytrackervisualisation',
