@@ -35,7 +35,8 @@ class OverlayApp(OverlayBaseApp):
         if "tracker config" in config:
             self._tracker = configure_tracker(config.get("tracker config"))
 
-        self._model_handles, models = populate_models(config.get("models"))
+        self._model_handles, models, self._transform_managers = \
+            populate_models(config.get("models"))
         self.vtk_overlay_window.add_vtk_models(models)
 
         if "camera" in config:

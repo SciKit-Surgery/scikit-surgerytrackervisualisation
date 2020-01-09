@@ -2,8 +2,10 @@
 Algorithms used by the trackervisualisation module
 """
 import vtk
+from numpy import eye, float64, reshape
 from sksurgerynditracker.nditracker import NDITracker
 from sksurgeryarucotracker.arucotracker import ArUcoTracker
+from sksurgerycore.transforms.transform_manager import TransformManager
 from sksurgeryvtk.models.vtk_cylinder_model import VTKCylinderModel
 from sksurgerytrackervisualisation.shapes.cone import VTKConeModel
 from sksurgerytrackervisualisation.shapes.sphere import VTKSphereModel
@@ -64,12 +66,16 @@ def populate_models(model_config):
 
       :return: port_handles
       :return: actors
+      :return: transform_managers
       """
     models = []
     port_handles = []
+    transform_managers = []
 
     for model in model_config:
         model_temp = None
+        transform_manager = TransformManager()
+
         if not model.get("load"):
             model_type = model.get("source")
             height = 10.0
@@ -80,6 +86,8 @@ def populate_models(model_config):
             resolution = 88
             port_handle = -1
             port_handle = model.get("port handle")
+            transform_manager.add("model2tracker", make_offset_matrix(model))
+
             if model_type == "cylinder":
                 height = model.get("height")
                 radius = model.get("radius")
@@ -109,7 +117,39 @@ def populate_models(model_config):
                                           True, 1.0)
             models.append(model_temp)
             port_handles.append(port_handle)
+            transform_managers.append(transform_manager)
         else:
             print("load it in")
 
-    return port_handles, models
+    return port_handles, models, transform_managers
+
+
+def make_offset_matrix(model_config):
+    """
+    generates an offset (or handeye) matrix
+
+    :param:  Model configuration
+    :return: If valid offset specified, returns a 4x4 offset matrix, if no
+             offset, returns identity.
+    :raises: ValueError
+    """
+
+    offset_matrix = eye(4, 4, dtype=float64)
+    if "offset" in model_config:
+        offset_t = model_config.get("offset")
+        if offset_t.dtype != float64:
+            raise ValueError("offset matrix must be type float64")
+
+        if len(offset_t) == 3:
+            for i in range(3):
+                offset_matrix[i, 3] = offset_t[i]
+            return offset_matrix
+
+        if len(offset_t) == 16:
+            offset_matrix = reshape(offset_t, (4, 4))
+            return offset_matrix
+
+        raise ValueError("Offset matrix must be a transform of length 3 or ",
+                         "a 4x4 tranform matrix (length 16)")
+
+    return offset_matrix
