@@ -64,14 +64,12 @@ def populate_models(model_config):
                height : the height of the cylinder or cone
                radius : the diameter of the cylinder, cone, or sphere
 
+      :return: a list of dictionaries, one for each model
       :return: port_handles
       :return: actors
       :return: transform_managers
       """
-    models = []
-    port_handles = []
-    transform_managers = []
-
+    model_dictionaries = []
     for model in model_config:
         model_temp = None
         transform_manager = TransformManager()
@@ -115,13 +113,14 @@ def populate_models(model_config):
                 name = model.get("name")
                 model_temp = VTKConeModel(height, radius, colour, 'name',
                                           True, 1.0)
-            models.append(model_temp)
-            port_handles.append(port_handle)
-            transform_managers.append(transform_manager)
+            dictionary = {"model" : model_temp,
+                          "port handle" : port_handle,
+                          "transform manager" : transform_manager}
+            model_dictionaries.append(dictionary)
         else:
             print("load it in")
 
-    return port_handles, models, transform_managers
+    return model_dictionaries
 
 
 def make_offset_matrix(model_config):

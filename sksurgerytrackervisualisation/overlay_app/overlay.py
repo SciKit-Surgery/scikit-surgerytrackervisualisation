@@ -35,9 +35,12 @@ class OverlayApp(OverlayBaseApp):
         if "tracker config" in config:
             self._tracker = configure_tracker(config.get("tracker config"))
 
-        self._model_handles, models, self._transform_managers = \
-            populate_models(config.get("models"))
-        self.vtk_overlay_window.add_vtk_models(models)
+        self._models = populate_models(config.get("models"))
+        models_t = []
+        for model in self._models:
+            models_t.append(model.get("model"))
+
+        self.vtk_overlay_window.add_vtk_models(models_t)
 
         if "camera" in config:
             camera_config = config.get("camera")
@@ -48,6 +51,8 @@ class OverlayApp(OverlayBaseApp):
                 self.vtk_overlay_window.foreground_renderer.ResetCamera(
                     -300, 300, -300, 300, -200, 0)
 
+        self.vtk_overlay_window.AddObserver("KeyPressEvent",
+                                            self.key_press_event)
 
     def update(self):
         """Update the background renderer with a new frame,
@@ -60,7 +65,7 @@ class OverlayApp(OverlayBaseApp):
         self.vtk_overlay_window.set_video_image(image)
         self.vtk_overlay_window.Render()
 
-    def _update_tracking(self):
+    def _update_tracking(self, record=False):
         """Internal method to move the rendered models in
         some interesting way
         #Iterate through the rendered models
@@ -79,11 +84,28 @@ class OverlayApp(OverlayBaseApp):
             for actor_index, actor in enumerate(
                     self.vtk_overlay_window.get_foreground_renderer().
                     GetActors()):
-                if self._model_handles[actor_index] == port_handle:
+                if self._models[actor_index].get("port handle") == port_handle:
                     if not isnan(quality[ph_index]):
-                        self._transform_managers[actor_index].add(
+                        self._models[actor_index].get("transform manager").add(
                             "tracker2world", tracking[ph_index])
                         actor.SetUserMatrix(np2vtk(
-                            self._transform_managers[actor_index].get(
-                                "model2world")))
+                            self._models[actor_index].get(
+                                "transform manager").get("model2world")))
+                        if record:
+                            print(actor_index,
+                                  self._models[actor_index].get(
+                                      "transform manager").get("model2world"))
                         break
+                    if record:
+                        print(ph_index, "is not tracked")
+
+    def key_press_event(self, _obj_not_used, _ev_not_used):
+        """
+        Handles a key press event
+
+        """
+
+        if self.vtk_overlay_window.GetKeySym() == 'p':
+            self._update_tracking(record=True)
+        else:
+            print("Unhandled key press event. Valid options are, p.")
