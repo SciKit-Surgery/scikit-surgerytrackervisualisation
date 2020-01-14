@@ -137,8 +137,6 @@ def make_offset_matrix(model_config):
     offset_matrix = eye(4, 4, dtype=float64)
     if "offset" in model_config:
         offset_t = model_config.get("offset")
-        if offset_t.dtype != float64:
-            raise ValueError("offset matrix must be type float64")
 
         if len(offset_t) == 3:
             for i in range(3):

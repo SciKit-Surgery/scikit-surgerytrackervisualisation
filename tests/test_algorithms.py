@@ -117,3 +117,42 @@ def test_populate_models():
     }
 
     tva.populate_models(configuration.get("models"))
+
+
+def test_make_offset_matrix():
+    """
+    Test make offset matrix
+    """
+    no_configuration = {}
+    offset_matrix = tva.make_offset_matrix(no_configuration)
+    assert np.array_equal(offset_matrix, np.eye(4, 4, dtype=np.float64))
+
+    bad_configuration = {"offset" : [0.0, 0.0]}
+
+    with pytest.raises(ValueError):
+        tva.make_offset_matrix(bad_configuration)
+
+    offset_test = np.array([[1.0, 0.0, 0.0, 100.0],
+                            [0.0, 1.0, 0.0, -120.0],
+                            [0.0, 0.0, 1.0, 42.0],
+                            [0.0, 0.0, 0.0, 1.0]],
+                           dtype=np.float64)
+
+    point_configuration = {"offset" : [100.0, -1.2e2, 42]}
+    offset_matrix = tva.make_offset_matrix(point_configuration)
+    assert np.array_equal(offset_matrix, offset_test)
+
+    offset_test = np.array([[-1.0, 0.0, 0.0, 100.0],
+                            [0.0, 1.0, 0.0, -120.0],
+                            [0.0, 0.0, 1.0, 42.0],
+                            [0.0, 0.0, 0.0, 1.0]],
+                           dtype=np.float64)
+
+
+    matrix_configuration = {"offset" : [-1.0, 0.0, 0.0, 100.0,
+                                        0.0, 1.0, 0.0, -1.2e2,
+                                        0.0, 0.0, 1.0, 42.0,
+                                        0.0, 0.0, 0.0, 1.0]}
+
+    offset_matrix = tva.make_offset_matrix(matrix_configuration)
+    assert np.array_equal(offset_matrix, offset_test)
