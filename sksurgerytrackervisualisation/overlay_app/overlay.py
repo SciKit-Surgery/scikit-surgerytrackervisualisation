@@ -81,5 +81,9 @@ class OverlayApp(OverlayBaseApp):
                     GetActors()):
                 if self._model_handles[actor_index] == port_handle:
                     if not isnan(quality[ph_index]):
-                        actor.SetUserMatrix(np2vtk(tracking[ph_index]))
+                        self._transform_managers[actor_index].add(
+                            "tracker2world", tracking[ph_index])
+                        actor.SetUserMatrix(np2vtk(
+                            self._transform_managers[actor_index].get(
+                                "model2world")))
                         break
