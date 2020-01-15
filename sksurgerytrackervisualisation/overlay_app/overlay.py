@@ -96,8 +96,6 @@ class OverlayApp(OverlayBaseApp):
                                   self._models[actor_index].get(
                                       "transform manager").get("model2world"))
                         break
-                    if record:
-                        print(ph_index, "is not tracked")
 
     def key_press_event(self, _obj_not_used, _ev_not_used):
         """

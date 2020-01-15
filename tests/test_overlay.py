@@ -180,3 +180,35 @@ def test_invalid_video_config(setup_qt):
     }
     with pytest.raises(KeyError):
         _ = OverlayApp(configuration)
+
+def test_key_press_event(setup_qt):
+    """
+    Test key press events
+    """
+    _ = setup_qt
+    configuration = {
+        "tracker config" :
+        {
+            "tracker type" : "aruco",
+            "debug"	   : False,
+            "video source" : "data/aruco_tag.avi"
+        },
+        "models" : [
+            {
+                "name"        : "tip",
+                "port handle" : 0,
+                "load"        : False,
+                "source"      : "cylinder",
+                "colour"      : [1.0, 0.0, 0.0],
+                "height"      : 50.0,
+                "radius"      : 10.0,
+            },
+        ]
+    }
+    overlay = OverlayApp(configuration)
+
+    overlay.vtk_overlay_window.SetKeySym("p")
+    overlay.vtk_overlay_window.KeyPressEvent()
+
+    overlay.vtk_overlay_window.SetKeySym("x")
+    overlay.vtk_overlay_window.KeyPressEvent()
