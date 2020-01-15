@@ -9,6 +9,7 @@ from sksurgerycore.transforms.transform_manager import TransformManager
 from sksurgeryvtk.models.vtk_cylinder_model import VTKCylinderModel
 from sksurgerytrackervisualisation.shapes.cone import VTKConeModel
 from sksurgerytrackervisualisation.shapes.sphere import VTKSphereModel
+from sksurgerytrackervisualisation.shapes.vtk_point_model import VTKPointCloud
 
 
 def np2vtk(mat):
@@ -113,9 +114,16 @@ def populate_models(model_config):
                 name = model.get("name")
                 model_temp = VTKConeModel(height, radius, colour, 'name',
                                           True, 1.0)
-            dictionary = {"model" : model_temp,
-                          "port handle" : port_handle,
-                          "transform manager" : transform_manager}
+            dictionary = {
+                "model" : model_temp,
+                "port handle" : port_handle,
+                "transform manager" : transform_manager
+                }
+            if model.get("grab points"):
+                dictionary["point cloud"] = VTKPointCloud(colour)
+            else:
+                dictionary["point cloud"] = None
+
             model_dictionaries.append(dictionary)
         else:
             print("load it in")

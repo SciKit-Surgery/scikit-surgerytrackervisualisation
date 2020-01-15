@@ -202,6 +202,7 @@ def test_key_press_event(setup_qt):
                 "colour"      : [1.0, 0.0, 0.0],
                 "height"      : 50.0,
                 "radius"      : 10.0,
+                "grab points" : True
             },
         ]
     }
