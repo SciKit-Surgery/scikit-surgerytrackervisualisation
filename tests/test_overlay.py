@@ -208,7 +208,7 @@ def test_key_press_event(setup_qt):
     }
     overlay = OverlayApp(configuration)
 
-    overlay.vtk_overlay_window.SetKeySym("p")
+    overlay.vtk_overlay_window.SetKeySym("g")
     overlay.vtk_overlay_window.KeyPressEvent()
 
     overlay.vtk_overlay_window.SetKeySym("x")
