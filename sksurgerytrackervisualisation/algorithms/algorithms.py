@@ -9,7 +9,8 @@ from sksurgerycore.transforms.transform_manager import TransformManager
 from sksurgeryvtk.models.vtk_cylinder_model import VTKCylinderModel
 from sksurgerytrackervisualisation.shapes.cone import VTKConeModel
 from sksurgerytrackervisualisation.shapes.sphere import VTKSphereModel
-from sksurgerytrackervisualisation.shapes.vtk_point_model import VTKPointCloud
+from sksurgerytrackervisualisation.shapes.dynamic_point_cloud import \
+        VTKPointCloud
 
 
 def np2vtk(mat):
