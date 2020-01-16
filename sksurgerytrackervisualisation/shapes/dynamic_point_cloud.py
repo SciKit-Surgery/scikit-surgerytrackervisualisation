@@ -41,9 +41,6 @@ class VTKPointCloud(vbm.VTKBaseModel):
 
         number_of_points = self._vtk_points.GetNumberOfPoints()
 
-        if number_of_points == 0:
-            return
-
         cells = hstack((ones((number_of_points, 1), dtype=int64),
                         arange(number_of_points).reshape(-1, 1)))
         cells = ascontiguousarray(cells, dtype=int64)
