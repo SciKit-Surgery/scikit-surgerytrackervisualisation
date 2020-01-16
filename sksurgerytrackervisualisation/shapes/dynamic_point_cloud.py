@@ -44,8 +44,10 @@ class VTKPointCloud(vbm.VTKBaseModel):
         cells = hstack((ones((number_of_points, 1), dtype=int64),
                         arange(number_of_points).reshape(-1, 1)))
         cells = ascontiguousarray(cells, dtype=int64)
-        cell_array = numpy_support.numpy_to_vtk(
-            num_array=cells, deep=True, array_type=VTK_ID_TYPE)
+        with warnings.catch_warnings(): #see issue #8
+            warnings.simplefilter("ignore", FutureWarning)
+            cell_array = numpy_support.numpy_to_vtk(
+                num_array=cells, deep=True, array_type=VTK_ID_TYPE)
 
         vtk_cells = vtkCellArray()
 
@@ -66,7 +68,5 @@ class VTKPointCloud(vbm.VTKBaseModel):
 
         :param: A 3 tuple representing the point coordinate
         """
-        with warnings.catch_warnings(): #see issue #8
-            warnings.simplefilter("ignore", FutureWarning)
-            self._vtk_points.InsertNextPoint(point)
+        self._vtk_points.InsertNextPoint(point)
         self._update_actor()
