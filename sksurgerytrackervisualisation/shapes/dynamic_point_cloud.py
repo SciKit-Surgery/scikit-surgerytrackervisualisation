@@ -5,7 +5,7 @@ Class to represent a point cloud via a vtkPolyData, with the
 ability to dynamically add points
 """
 
-from numpy import hstack, ones, int64, arange, ascontiguousarray
+from numpy import hstack, ones, int64, arange, ascontiguousarray, warnings
 from vtk import (vtkPoints, vtkCellArray, vtkPolyData, vtkPolyDataMapper,
                  VTK_ID_TYPE)
 from vtk.util import numpy_support
@@ -69,6 +69,7 @@ class VTKPointCloud(vbm.VTKBaseModel):
 
         :param: A 3 tuple representing the point coordinate
         """
-
-        self._vtk_points.InsertNextPoint(point)
+        with warnings.catch_warnings(): #see issue #8
+            warnings.simplefilter("ignore", FutureWarning)
+            self._vtk_points.InsertNextPoint(point)
         self._update_actor()
