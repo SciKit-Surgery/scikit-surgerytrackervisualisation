@@ -3,7 +3,7 @@
 # confused with the software requirements, which are listed in
 # doc/requirements.rst
 numpy>=1.11
-PySide2
+PySide2<=5.13.1
 vtk
 scikit-surgeryvtk>=0.9.0
 scikit-surgeryimage>=0.6.0
