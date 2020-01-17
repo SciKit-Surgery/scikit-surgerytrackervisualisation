@@ -11,8 +11,12 @@ from sksurgerytrackervisualisation.algorithms.background_image import \
 
 
 class OverlayApp(OverlayBaseApp):
-    """Inherits from OverlayBaseApp, adding code to move vtk models
-    based on input from a scikitsurgery tracker"""
+    """
+    Inherits from OverlayBaseApp, adding code to move vtk models
+    based on input from a scikitsurgery tracker.
+    Adds a function to detect a key press event, ("g")
+    and add points to a point cloud.
+    """
 
     def __init__(self, config):
         """Overides overlay base app's init, to initialise the
@@ -35,8 +39,17 @@ class OverlayApp(OverlayBaseApp):
         if "tracker config" in config:
             self._tracker = configure_tracker(config.get("tracker config"))
 
-        self._model_handles, models = populate_models(config.get("models"))
-        self.vtk_overlay_window.add_vtk_models(models)
+        self._models = populate_models(config.get("models"))
+        models_t = []
+        for model in self._models:
+            models_t.append(model.get("model"))
+
+        self.vtk_overlay_window.add_vtk_models(models_t)
+
+        for model in self._models:
+            if model.get("point cloud") is not None:
+                self.vtk_overlay_window.add_vtk_actor(
+                    model.get("point cloud").actor)
 
         if "camera" in config:
             camera_config = config.get("camera")
@@ -47,6 +60,8 @@ class OverlayApp(OverlayBaseApp):
                 self.vtk_overlay_window.foreground_renderer.ResetCamera(
                     -300, 300, -300, 300, -200, 0)
 
+        self.vtk_overlay_window.AddObserver("KeyPressEvent",
+                                            self.key_press_event)
 
     def update(self):
         """Update the background renderer with a new frame,
@@ -59,7 +74,7 @@ class OverlayApp(OverlayBaseApp):
         self.vtk_overlay_window.set_video_image(image)
         self.vtk_overlay_window.Render()
 
-    def _update_tracking(self):
+    def _update_tracking(self, record=False):
         """Internal method to move the rendered models in
         some interesting way
         #Iterate through the rendered models
@@ -78,7 +93,26 @@ class OverlayApp(OverlayBaseApp):
             for actor_index, actor in enumerate(
                     self.vtk_overlay_window.get_foreground_renderer().
                     GetActors()):
-                if self._model_handles[actor_index] == port_handle:
-                    if not isnan(quality[ph_index]):
-                        actor.SetUserMatrix(np2vtk(tracking[ph_index]))
-                        break
+                model = self._models[actor_index]
+                if model.get("port handle") == port_handle \
+                        and not isnan(quality[ph_index]):
+                    model.get("transform manager").add(
+                        "tracker2world", tracking[ph_index])
+                    model2world = model.get(
+                        "transform manager").get("model2world")
+                    actor.SetUserMatrix(np2vtk(model2world))
+                    if record:
+                        if model.get("point cloud") is not None:
+                            model.get("point cloud").add_point(
+                                (model2world[0:3, 3]))
+
+                    break
+
+    def key_press_event(self, _obj_not_used, _ev_not_used):
+        """
+        Handles a key press event
+
+        """
+
+        if self.vtk_overlay_window.GetKeySym() == 'g':
+            self._update_tracking(record=True)
