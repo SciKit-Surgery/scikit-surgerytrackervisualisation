@@ -7,6 +7,7 @@ from sksurgerynditracker.nditracker import NDITracker
 from sksurgeryarucotracker.arucotracker import ArUcoTracker
 from sksurgerycore.transforms.transform_manager import TransformManager
 from sksurgeryvtk.models.vtk_cylinder_model import VTKCylinderModel
+from sksurgeryvtk.models.vtk_surface_model import VTKSurfaceModel
 from sksurgerytrackervisualisation.shapes.cone import VTKConeModel
 from sksurgerytrackervisualisation.shapes.sphere import VTKSphereModel
 from sksurgerytrackervisualisation.shapes.dynamic_point_cloud import \
@@ -127,7 +128,19 @@ def populate_models(model_config):
 
             model_dictionaries.append(dictionary)
         else:
-            print("load it in")
+            visibility = True
+            opacity = 1.0
+            filename = model.get("filename")
+            colour = model.get("colour")
+            model_temp = VTKSurfaceModel(filename, colour, visibility, opacity)
+            port_handle = model.get("port handle")
+            transform_manager.add("model2tracker", make_offset_matrix(model))
+            dictionary = {
+                "model" : model_temp,
+                "port handle" : port_handle,
+                "transform manager" : transform_manager
+                }
+            model_dictionaries.append(dictionary)
 
     return model_dictionaries
 
