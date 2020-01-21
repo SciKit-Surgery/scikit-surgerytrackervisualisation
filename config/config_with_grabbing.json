@@ -28,48 +28,25 @@
 			"offset"      : [0.0, 0.0, 100.0],
 			"grab points" : true
                    },
-                   {
-                        "name"        : "section_1",
-                        "port handle" : 1,
-                        "load"        : false,
-                        "filename"    : "n/a",
-			"source"      : "cylinder",
-			"colour"      : [1.0, 0.0, 0.0],
-			"height"      : 50.0,
-			"radius"      : 6.0,
-			"angle"       : 0.0,
-			"orientation" : [0.0, 0.0, 1.0],
-			"offset"      : [1.0, 0.0, 0.0, 0.0,
-					 0.0, 1.0, 0.0, 0.0, 
-					 0.0, 0.0, 1.0, 100.0,
-					 0.0, 0.0, 0.0, 1.0]
-                   },
-                   {
-                        "name"        : "section_2",
-                        "port handle" : 2,
-                        "load"        : false,
-                        "filename"    : "n/a",
-			"source"      : "cylinder",
-			"colour"      : [1.0, 0.0, 0.0],
-			"height"      : 50.0,
-			"radius"      : 6.0,
-			"resolution"  : 10,
-			"orientation" : [0.0, 0.0, 1.0]
-                   },
 		   {
-			"name"        : "anatomy_0",
-			"port handle" : -1,
-			"load"        : "true",
-			"filename"    : "data/example.vtp",
-			"model to world" : "data/example_mtw.4x4"
+			"name"        		: "anatomy_0",
+			"port handle" 		: -1,
+			"load"        		: "true",
+			"filename"    		: "data/liverphantom-iso=-130_cleaned2_mc_smooth2.stl",
+			"model to world" 	: "data/mtw.4x4",
+			"colour"      		: [0.0, 0.0, 1.0],
+			"register to" 		: "tip"
 		   }
 
                    ],
+
 	"camera" : {
-			"origin" 	  : [0.0, 0.0, 0.0],
-			"normal" 	  : [0.0, 0.0, 1.0],
-			"bounding box" : [0.0, 640.0, 0.0, 480.0, -100.0, 0.0]
-	}
+                        "origin"          : [0.0, 0.0, 0.0],
+                        "normal"          : [0.0, 0.0, 1.0],
+                        "bounding box" : [0.0, 640.0, 0.0, 480.0, -100.0, 0.0]
+        }
+
+
 
 }
 
