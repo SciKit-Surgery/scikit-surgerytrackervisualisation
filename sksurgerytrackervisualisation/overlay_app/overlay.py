@@ -116,3 +116,13 @@ class OverlayApp(OverlayBaseApp):
 
         if self.vtk_overlay_window.GetKeySym() == 'g':
             self._update_tracking(record=True)
+
+        if self.vtk_overlay_window.GetKeySym() == 'i':
+            self._run_icp()
+
+    def _run_icp(self):
+        for model in self._models:
+           if model.get("target"):
+               for target in self._models:
+                   if target.get("name") == model.get("target"):
+                       print("attempting ICP: source = ", model.get("name"), "target=", target.get("name"))

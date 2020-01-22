@@ -119,12 +119,15 @@ def populate_models(model_config):
             dictionary = {
                 "model" : model_temp,
                 "port handle" : port_handle,
-                "transform manager" : transform_manager
+                "transform manager" : transform_manager,
+                "name" : name
                 }
             if model.get("grab points"):
                 dictionary["point cloud"] = VTKPointCloud(colour)
             else:
                 dictionary["point cloud"] = None
+            if model.get("register to"):
+                dictionary["target"]=model.get("register to")
 
             model_dictionaries.append(dictionary)
         else:
@@ -132,14 +135,18 @@ def populate_models(model_config):
             opacity = 1.0
             filename = model.get("filename")
             colour = model.get("colour")
+            name = model.get("name")
             model_temp = VTKSurfaceModel(filename, colour, visibility, opacity)
             port_handle = model.get("port handle")
             transform_manager.add("model2tracker", make_offset_matrix(model))
             dictionary = {
                 "model" : model_temp,
                 "port handle" : port_handle,
-                "transform manager" : transform_manager
+                "transform manager" : transform_manager,
+                "name" : name
                 }
+            if model.get("register to"):
+                dictionary["target"]=model.get("register to")
             model_dictionaries.append(dictionary)
 
     return model_dictionaries
