@@ -33,7 +33,6 @@ class VTKPointCloud(vbm.VTKBaseModel):
         self._vtk_points = vtkPoints()
         self._vtk_points.SetDataTypeToFloat()
 
-
         self.actor.GetProperty().SetPointSize(5)
         self.actor.GetProperty().SetColor(colour)
 
@@ -70,3 +69,13 @@ class VTKPointCloud(vbm.VTKBaseModel):
         """
         self._vtk_points.InsertNextPoint(point)
         self._update_actor()
+
+    def get_polydata(self):
+        """
+        Returns a polydata consisting of the poind cloud
+        """
+        vtk_poly = vtkPolyData()
+        vtk_poly.SetPoints(self._vtk_points)
+
+        return vtk_poly
+
