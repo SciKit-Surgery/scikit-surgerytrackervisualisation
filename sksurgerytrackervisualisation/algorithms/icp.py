@@ -5,7 +5,7 @@ Algorithms for doing Iterative Closest Point
 from vtk import vtkIterativeClosestPointTransform, vtkCellLocator, vtkMatrix4x4
 
 def vtk_icp(source, target, locator=None, max_iterations=100,
-            max_landmarks=50, check_mean_distance=False,
+            max_landmarks=1000, check_mean_distance=False,
             maximum_mean_distance=0.001):
 
     """
