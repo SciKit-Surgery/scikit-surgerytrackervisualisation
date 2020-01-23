@@ -91,22 +91,18 @@ class OverlayApp(OverlayBaseApp):
         port_handles, _, _, tracking, quality = self._tracker.get_frame()
 
         for ph_index, port_handle in enumerate(port_handles):
-            for actor_index, actor in enumerate(
-                    self.vtk_overlay_window.get_foreground_renderer().
-                    GetActors()):
-                model = self._models[actor_index]
+            for model in self._models:
                 if model.get("port handle") == port_handle \
                         and not isnan(quality[ph_index]):
                     model.get("transform manager").add(
                         "tracker2world", tracking[ph_index])
                     model2world = model.get(
                         "transform manager").get("model2world")
-                    actor.SetUserMatrix(np2vtk(model2world))
+                    model.get("model").actor.SetUserMatrix(np2vtk(model2world))
                     if record:
                         if model.get("point cloud") is not None:
                             model.get("point cloud").add_point(
                                 (model2world[0:3, 3]))
-
                     break
 
     def key_press_event(self, _obj_not_used, _ev_not_used):
