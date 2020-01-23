@@ -77,77 +77,50 @@ def populate_models(model_config):
         model_temp = None
         transform_manager = TransformManager()
 
+        colour = model.get("colour", (1.0, 1.0, 1.0))
+        port_handle = model.get("port handle", -1)
+        name = model.get("name", "unnamed")
+        height = model.get("height", 10.0)
+        radius = model.get("radius", 3.0)
+        angle = model.get("angle", 90.0)
+        orientation = model.get("orientation", (1.0, 0.0, 0.0))
+        resolution = model.get("resolution", 88)
+        opacity = model.get("opacity", 1.0)
+        visibility = model.get("visibility", True)
+
+        transform_manager.add("model2tracker", make_offset_matrix(model))
+
         if not model.get("load"):
             model_type = model.get("source")
-            height = 10.0
-            radius = 3.0
-            colour = (1.0, 1.0, 1.0)
-            angle = 90.0
-            orientation = (1.0, 0.0, 0.0)
-            resolution = 88
-            port_handle = -1
-            port_handle = model.get("port handle")
-            transform_manager.add("model2tracker", make_offset_matrix(model))
 
             if model_type == "cylinder":
-                height = model.get("height")
-                radius = model.get("radius")
-                colour = model.get("colour")
-                name = model.get("name")
-                if "angle" in model:
-                    angle = model.get("angle")
-                if "orientation" in model:
-                    orientation = model.get("orientation")
-                if "resolution" in model:
-                    resolution = model.get("resolution")
-
                 model_temp = VTKCylinderModel(height, radius, colour, name,
                                               angle, orientation, resolution,
-                                              True, 1.0)
+                                              visibility, opacity)
             if model_type == "sphere":
-                radius = model.get("radius")
-                colour = model.get("colour")
-                name = model.get("name")
-                model_temp = VTKSphereModel(radius, colour, name, True, 1.0)
+                model_temp = VTKSphereModel(radius, colour, name, visibility, opacity)
             if model_type == "cone":
-                height = model.get("height")
-                radius = model.get("radius")
-                colour = model.get("colour")
-                name = model.get("name")
                 model_temp = VTKConeModel(height, radius, colour, 'name',
-                                          True, 1.0)
-            dictionary = {
-                "model" : model_temp,
-                "port handle" : port_handle,
-                "transform manager" : transform_manager,
-                "name" : name
-                }
-            if model.get("grab points"):
-                dictionary["point cloud"] = VTKPointCloud(colour)
-            else:
-                dictionary["point cloud"] = None
-            if model.get("register to"):
-                dictionary["target"]=model.get("register to")
+                                          visibility, opacity)
 
-            model_dictionaries.append(dictionary)
         else:
-            visibility = True
-            opacity = 1.0
             filename = model.get("filename")
-            colour = model.get("colour")
-            name = model.get("name")
             model_temp = VTKSurfaceModel(filename, colour, visibility, opacity)
-            port_handle = model.get("port handle")
-            transform_manager.add("model2tracker", make_offset_matrix(model))
-            dictionary = {
-                "model" : model_temp,
-                "port handle" : port_handle,
-                "transform manager" : transform_manager,
-                "name" : name
-                }
-            if model.get("register to"):
-                dictionary["target"]=model.get("register to")
-            model_dictionaries.append(dictionary)
+        
+        dictionary = {
+            "model" : model_temp,
+            "port handle" : port_handle,
+            "transform manager" : transform_manager,
+            "name" : name
+            }
+        if model.get("grab points"):
+            dictionary["point cloud"] = VTKPointCloud(colour)
+        else:
+            dictionary["point cloud"] = None
+        if model.get("register to"):
+            dictionary["target"]=model.get("register to")
+
+        model_dictionaries.append(dictionary)
 
     return model_dictionaries
 
