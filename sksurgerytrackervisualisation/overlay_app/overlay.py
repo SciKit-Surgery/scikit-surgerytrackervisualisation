@@ -4,6 +4,7 @@
 #from sksurgerytrackervisualisation.shapes import cone, cylinder
 from math import isnan
 from sksurgeryutils.common_overlay_apps import OverlayBaseApp
+from sksurgeryvtk.text.text_overlay import VTKCornerAnnotation
 from sksurgerytrackervisualisation.algorithms.algorithms import (
         np2vtk, configure_tracker, populate_models)
 from sksurgerytrackervisualisation.algorithms.background_image import \
@@ -64,6 +65,10 @@ class OverlayApp(OverlayBaseApp):
         self.vtk_overlay_window.AddObserver("KeyPressEvent",
                                             self.key_press_event)
 
+        self._text = VTKCornerAnnotation()
+        self.vtk_overlay_window.add_vtk_actor(self._text.text_actor)
+        self._status_strings = ["", "", "", ""]
+
     def update(self):
         """Update the background renderer with a new frame,
         move the model and render"""
@@ -74,6 +79,7 @@ class OverlayApp(OverlayBaseApp):
 
         self.vtk_overlay_window.set_video_image(image)
         self.vtk_overlay_window.Render()
+
 
     def _update_tracking(self, record=False):
         """Internal method to move the rendered models in
@@ -89,11 +95,15 @@ class OverlayApp(OverlayBaseApp):
             actor.SetOrientation(orientation)
         """
         port_handles, _, _, tracking, quality = self._tracker.get_frame()
-
+        self._status_strings[0] = ""
         for ph_index, port_handle in enumerate(port_handles):
+            self._status_strings[0] = self._status_strings[0] + "\n" + \
+                    str(port_handle)
             for model in self._models:
                 if model.get("port handle") == port_handle \
                         and not isnan(quality[ph_index]):
+                    self._status_strings[0] = self._status_strings[0] + " :" \
+                            + model.get("name") + " OK"
                     model.get("transform manager").add(
                         "tracker2world", tracking[ph_index])
                     model2world = model.get(
@@ -101,9 +111,13 @@ class OverlayApp(OverlayBaseApp):
                     model.get("model").actor.SetUserMatrix(np2vtk(model2world))
                     if record:
                         if model.get("point cloud") is not None:
-                            model.get("point cloud").add_point(
+                            points = model.get("point cloud").add_point(
                                 (model2world[0:3, 3]))
+                            self._status_strings[1] = model.get("name") + \
+                                    " : " + str(points)
                     break
+
+        self._text.set_text(self._status_strings)
 
     def key_press_event(self, _obj_not_used, _ev_not_used):
         """

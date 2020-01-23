@@ -67,8 +67,10 @@ class VTKPointCloud(vbm.VTKBaseModel):
 
         :param: A 3 tuple representing the point coordinate
         """
-        self._vtk_points.InsertNextPoint(point)
+        points = self._vtk_points.InsertNextPoint(point)
         self._update_actor()
+        return points
+
 
     def get_polydata(self):
         """
