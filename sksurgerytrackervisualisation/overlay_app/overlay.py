@@ -136,8 +136,6 @@ class OverlayApp(OverlayBaseApp):
             if model.get("target"):
                 for target in self._models:
                     if target.get("name") == model.get("target"):
-                        print("attempting ICP: source = ", model.get("name"),
-                              "target=", target.get("name"))
                         source = model.get("model")
                         target = target.get("point cloud")
                         model2world = vtk_icp(source.source,
