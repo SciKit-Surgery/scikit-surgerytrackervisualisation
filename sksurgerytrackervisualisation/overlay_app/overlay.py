@@ -8,7 +8,7 @@ from sksurgerytrackervisualisation.algorithms.algorithms import (
         np2vtk, configure_tracker, populate_models)
 from sksurgerytrackervisualisation.algorithms.background_image import \
         OverlayBackground
-from sksurgerytrackervisualisation.algorithms.icp import vtk_icp 
+from sksurgerytrackervisualisation.algorithms.icp import vtk_icp
 
 
 class OverlayApp(OverlayBaseApp):
@@ -119,13 +119,14 @@ class OverlayApp(OverlayBaseApp):
 
     def _run_icp(self):
         for model in self._models:
-           if model.get("target"):
-               for target in self._models:
-                   if target.get("name") == model.get("target"):
-                       print("attempting ICP: source = ", model.get("name"), "target=", target.get("name"))
-                       source=model.get("model")
-                       target=target.get("point cloud")
-                       model2world = vtk_icp(source.source,target.get_polydata())
-                       model.get("model").actor.SetUserMatrix(model2world)
-                       print (model2world)
-
+            if model.get("target"):
+                for target in self._models:
+                    if target.get("name") == model.get("target"):
+                        print("attempting ICP: source = ", model.get("name"),
+                              "target=", target.get("name"))
+                        source = model.get("model")
+                        target = target.get("point cloud")
+                        model2world = vtk_icp(source.source,
+                                              target.get_polydata())
+                        model.get("model").actor.SetUserMatrix(model2world)
+                        print(model2world)

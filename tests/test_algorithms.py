@@ -109,8 +109,9 @@ def test_populate_models():
             {
                 "name"        : "anatomy_0",
                 "port handle" : -1,
-                "load"        : "true",
-                "filename"    : "data/liverphantom-iso=-130_cleaned2_mc_smooth2.stl",
+                "load"        : True,
+                "filename"    :
+                    "data/liverphantom-iso=-130_cleaned2_mc_smooth2.stl",
                 "model to world" : "data/mtw.4x4"
             }
         ]

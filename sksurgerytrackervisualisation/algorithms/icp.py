@@ -13,10 +13,11 @@ def vtk_icp(source, target, locator=None, max_iterations=100,
     Target is a point set, source is a point cloud
     """
 
-    #why not let vtk handle this, because vtk seg faults in a rather 
+    #why not let vtk handle this, because vtk seg faults in a rather
     #unhelpful way
     if source.GetNumberOfCells() == 0:
-        raise ValueError("vtk_icp needs a polydata surface", source.GetNumberOfCells())
+        raise ValueError("vtk_icp needs a polydata surface",
+                         source.GetNumberOfCells())
 
     vtk_icp_transform = vtkIterativeClosestPointTransform()
     vtk_icp_transform.GetLandmarkTransform().SetModeToRigidBody()
@@ -25,7 +26,7 @@ def vtk_icp(source, target, locator=None, max_iterations=100,
     vtk_icp_transform.SetTarget(source)
     print("making locator")
     if locator is None:
-        locator=vtkCellLocator()
+        locator = vtkCellLocator()
         locator.SetDataSet(source)
         locator.SetNumberOfCellsPerBucket(1)
         locator.BuildLocator()
@@ -42,11 +43,10 @@ def vtk_icp(source, target, locator=None, max_iterations=100,
 
     print(vtk_icp_transform.GetMatrix())
     result = vtkMatrix4x4()
-    result=vtk_icp_transform.GetMatrix()
+    result = vtk_icp_transform.GetMatrix()
 
-    inverted=vtkMatrix4x4()
+    inverted = vtkMatrix4x4()
 
     vtkMatrix4x4.Invert(result, inverted)
-    print (inverted)
 
     return inverted

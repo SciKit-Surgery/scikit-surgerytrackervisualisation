@@ -2,11 +2,7 @@
 
 """scikit-surgerytrackervisualisation tests"""
 
-from numpy import hstack, ones, int64, arange, ascontiguousarray, warnings
-from vtk import (vtkPoints, vtkCellArray, vtkPolyData, vtkPolyDataMapper,
-                 VTK_ID_TYPE, vtkSurfaceReconstructionFilter,
-                 vtkDelaunay3D)
-from vtk.util import numpy_support
+from vtk import vtkPolyData
 from sksurgeryvtk.models.vtk_surface_model import VTKSurfaceModel
 
 import sksurgerytrackervisualisation.algorithms.icp as icp
@@ -17,15 +13,11 @@ def make_source_and_target():
     """
     Helper to make a source and target.
     """
-    filename="data/liverphantom-iso=-130_cleaned2_mc_smooth2.stl"
-    colour=[1.0, 1.0, 1.0]
+    filename = "data/liverphantom-iso=-130_cleaned2_mc_smooth2.stl"
+    colour = [1.0, 1.0, 1.0]
     source_poly = VTKSurfaceModel(filename, colour)
-   
-    target_points=source_poly.source.GetPoints()
- #   target_points=vtkPoints()
- #   target_points.InsertNextPoint(0.0,0.0,1.0)
- #   target_points.InsertNextPoint(4.0,3.0,1.0)
- #   target_points.InsertNextPoint(4.0,0.0,1.0)
+
+    target_points = source_poly.source.GetPoints()
 
     target_vtk_poly = vtkPolyData()
     target_vtk_poly.SetPoints(target_points)
@@ -43,4 +35,4 @@ def test_vtk_icp():
     check_mean_distance = False
     maximum_mean_distance = 0.001
     print(icp.vtk_icp(source, target, locator, max_iterations, max_landmarks,
-                check_mean_distance, maximum_mean_distance))
+                      check_mean_distance, maximum_mean_distance))

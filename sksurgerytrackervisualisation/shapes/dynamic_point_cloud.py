@@ -78,4 +78,3 @@ class VTKPointCloud(vbm.VTKBaseModel):
         vtk_poly.SetPoints(self._vtk_points)
 
         return vtk_poly
-

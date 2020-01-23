@@ -98,7 +98,8 @@ def populate_models(model_config):
                                               angle, orientation, resolution,
                                               visibility, opacity)
             if model_type == "sphere":
-                model_temp = VTKSphereModel(radius, colour, name, visibility, opacity)
+                model_temp = VTKSphereModel(radius, colour, name, visibility,
+                                            opacity)
             if model_type == "cone":
                 model_temp = VTKConeModel(height, radius, colour, 'name',
                                           visibility, opacity)
@@ -109,7 +110,7 @@ def populate_models(model_config):
 
             filename = model.get("filename")
             model_temp = VTKSurfaceModel(filename, colour, visibility, opacity)
-        
+
         dictionary = {
             "model" : model_temp,
             "port handle" : port_handle,
@@ -121,7 +122,7 @@ def populate_models(model_config):
         else:
             dictionary["point cloud"] = None
         if model.get("register to"):
-            dictionary["target"]=model.get("register to")
+            dictionary["target"] = model.get("register to")
 
         model_dictionaries.append(dictionary)
 
