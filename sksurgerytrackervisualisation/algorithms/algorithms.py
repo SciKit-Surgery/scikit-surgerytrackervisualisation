@@ -71,6 +71,8 @@ def populate_models(model_config):
       :return: port_handles
       :return: actors
       :return: transform_managers
+
+      :raises: KeyError if asked to load model without filename
       """
     model_dictionaries = []
     for model in model_config:
@@ -106,7 +108,7 @@ def populate_models(model_config):
 
         else:
             if not model.get("filename", False):
-                raise ValueError("Config set load, but no filename given")
+                raise KeyError("Config set load, but no filename given")
 
             filename = model.get("filename")
             model_temp = VTKSurfaceModel(filename, colour, visibility, opacity)

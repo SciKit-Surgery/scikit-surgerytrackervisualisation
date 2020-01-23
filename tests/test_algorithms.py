@@ -112,12 +112,23 @@ def test_populate_models():
                 "load"        : True,
                 "filename"    :
                     "data/liverphantom-iso=-130_cleaned2_mc_smooth2.stl",
-                "model to world" : "data/mtw.4x4"
+                "model to world" : "data/mtw.4x4",
+                "register to" : "tip"
             }
         ]
     }
 
     tva.populate_models(configuration.get("models"))
+
+    bad_model = [
+        {
+            "name"        : "anatomy_0",
+            "port handle" : -1,
+            "load"        : True,
+        }
+    ]
+    with pytest.raises(KeyError):
+        tva.populate_models(bad_model)
 
 
 def test_make_offset_matrix():
