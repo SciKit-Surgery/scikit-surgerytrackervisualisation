@@ -90,7 +90,7 @@ def populate_models(model_config):
 
         transform_manager.add("model2tracker", make_offset_matrix(model))
 
-        if not model.get("load"):
+        if not model.get("load", False):
             model_type = model.get("source")
 
             if model_type == "cylinder":
@@ -104,6 +104,9 @@ def populate_models(model_config):
                                           visibility, opacity)
 
         else:
+            if not model.get("filename", False):
+                raise ValueError("Config set load, but no filename given")
+
             filename = model.get("filename")
             model_temp = VTKSurfaceModel(filename, colour, visibility, opacity)
         

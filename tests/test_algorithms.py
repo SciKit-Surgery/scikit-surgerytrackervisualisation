@@ -110,8 +110,8 @@ def test_populate_models():
                 "name"        : "anatomy_0",
                 "port handle" : -1,
                 "load"        : "true",
-                "filename"    : "data/example.vtp",
-                "model to world" : "data/example_mtw.4x4"
+                "filename"    : "data/liverphantom-iso=-130_cleaned2_mc_smooth2.stl",
+                "model to world" : "data/mtw.4x4"
             }
         ]
     }
