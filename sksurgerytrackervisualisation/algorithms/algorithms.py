@@ -11,7 +11,7 @@ from sksurgeryvtk.models.vtk_surface_model import VTKSurfaceModel
 from sksurgerytrackervisualisation.shapes.cone import VTKConeModel
 from sksurgerytrackervisualisation.shapes.sphere import VTKSphereModel
 from sksurgerytrackervisualisation.shapes.dynamic_point_cloud import \
-        VTKPointCloud
+        VTKDynamicPointCloud
 
 
 def np2vtk(mat):
@@ -120,7 +120,7 @@ def populate_models(model_config):
             "name" : name
             }
         if model.get("grab points"):
-            dictionary["point cloud"] = VTKPointCloud(colour)
+            dictionary["point cloud"] = VTKDynamicPointCloud(colour)
         else:
             dictionary["point cloud"] = None
         if model.get("register to"):

@@ -5,7 +5,7 @@
 from sksurgerytrackervisualisation.shapes.cone import VTKConeModel
 from sksurgerytrackervisualisation.shapes.sphere import VTKSphereModel
 from sksurgerytrackervisualisation.shapes.dynamic_point_cloud import \
-        VTKPointCloud
+        VTKDynamicPointCloud
 
 # Pytest style
 
@@ -31,6 +31,8 @@ def test_point_cloud():
     Tests for the point cloud.
     """
 
-    cloud = VTKPointCloud(colour=(0.0, 0.2, 0.3))
+    cloud = VTKDynamicPointCloud(colour=(0.0, 0.2, 0.3))
 
     cloud.add_point((1.0, 1.0, 1.0))
+
+    _ = cloud.get_polydata()
