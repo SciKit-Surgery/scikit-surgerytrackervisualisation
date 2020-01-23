@@ -2,6 +2,7 @@
 
 """scikit-surgerytrackervisualisation tests"""
 
+import pytest
 from vtk import vtkPolyData
 from sksurgeryvtk.models.vtk_surface_model import VTKSurfaceModel
 
@@ -34,5 +35,11 @@ def test_vtk_icp():
     max_landmarks = 3
     check_mean_distance = False
     maximum_mean_distance = 0.001
-    print(icp.vtk_icp(source, target, locator, max_iterations, max_landmarks,
-                      check_mean_distance, maximum_mean_distance))
+    icp.vtk_icp(source, target, locator, max_iterations, max_landmarks,
+                check_mean_distance, maximum_mean_distance)
+
+    source_with_no_cells = vtkPolyData()
+    source_with_no_cells.SetPoints(source.GetPoints())
+    with pytest.raises(ValueError):
+        icp.vtk_icp(source_with_no_cells, target, locator, max_iterations,
+                    max_landmarks, check_mean_distance, maximum_mean_distance)
