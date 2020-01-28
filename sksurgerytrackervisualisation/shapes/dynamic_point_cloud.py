@@ -12,7 +12,7 @@ from vtk.util import numpy_support
 import sksurgeryvtk.models.vtk_base_model as vbm
 
 
-class VTKPointCloud(vbm.VTKBaseModel):
+class VTKDynamicPointCloud(vbm.VTKBaseModel):
     """
     Class to represent a point cloud via a vtkPolyData, with the
     ability to dynamically add points
@@ -26,13 +26,12 @@ class VTKPointCloud(vbm.VTKBaseModel):
         :param visibility: boolean, True|False
         :param opacity: float [0,1]
         """
-        super(VTKPointCloud, self).__init__((1.0, 1.0, 1.0),
-                                            visibility,
-                                            opacity)
+        super(VTKDynamicPointCloud, self).__init__((1.0, 1.0, 1.0),
+                                                   visibility,
+                                                   opacity)
 
         self._vtk_points = vtkPoints()
         self._vtk_points.SetDataTypeToFloat()
-
 
         self.actor.GetProperty().SetPointSize(5)
         self.actor.GetProperty().SetColor(colour)
@@ -68,5 +67,16 @@ class VTKPointCloud(vbm.VTKBaseModel):
 
         :param: A 3 tuple representing the point coordinate
         """
-        self._vtk_points.InsertNextPoint(point)
+        points = self._vtk_points.InsertNextPoint(point)
         self._update_actor()
+        return points
+
+
+    def get_polydata(self):
+        """
+        Returns a polydata consisting of the poind cloud
+        """
+        vtk_poly = vtkPolyData()
+        vtk_poly.SetPoints(self._vtk_points)
+
+        return vtk_poly

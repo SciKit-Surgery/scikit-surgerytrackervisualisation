@@ -204,6 +204,12 @@ def test_key_press_event(setup_qt):
                 "radius"      : 10.0,
                 "grab points" : True
             },
+            {
+                "name"        : "anatomy",
+                "load"        : True,
+                "filename"    : "data/liverphantom-top.stl",
+                "register to" : "tip"
+            }
         ]
     }
     overlay = OverlayApp(configuration)
@@ -212,4 +218,7 @@ def test_key_press_event(setup_qt):
     overlay.vtk_overlay_window.KeyPressEvent()
 
     overlay.vtk_overlay_window.SetKeySym("x")
+    overlay.vtk_overlay_window.KeyPressEvent()
+
+    overlay.vtk_overlay_window.SetKeySym("i")
     overlay.vtk_overlay_window.KeyPressEvent()
