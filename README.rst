@@ -1,33 +1,36 @@
 scikit-surgerytrackervisualisation
 ==================================
 
-.. image:: https://weisslab.cs.ucl.ac.uk/WEISS/SoftwareRepositories/SNAPPY/scikit-surgerytrackervisualisation/raw/master/project-icon.png
+.. image:: https://github.com/UCL/scikit-surgerytrackervisualisation/raw/master/project-icon.png
    :height: 128px
    :width: 128px
-   :target: https://weisslab.cs.ucl.ac.uk/WEISS/SoftwareRepositories/SNAPPY/scikit-surgerytrackervisualisation
+   :target: https://github.com/UCL/scikit-surgerytrackervisualisation
    :alt: Logo
 
-.. image:: https://weisslab.cs.ucl.ac.uk/WEISS/SoftwareRepositories/SNAPPY/scikit-surgerytrackervisualisation/badges/master/build.svg
-   :target: https://weisslab.cs.ucl.ac.uk/WEISS/SoftwareRepositories/SNAPPY/scikit-surgerytrackervisualisation/pipelines
-   :alt: GitLab-CI test status
+.. image:: https://github.com/UCL/scikit-surgerytrackervisualisation/workflows/.github/workflows/ci.yml/badge.svg
+   :target: https://github.com/UCL/scikit-surgerytrackervisualisation/actions
+   :alt: GitHub Actions CI status
 
-.. image:: https://weisslab.cs.ucl.ac.uk/WEISS/SoftwareRepositories/SNAPPY/scikit-surgerytrackervisualisation/badges/master/coverage.svg
-    :target: https://weisslab.cs.ucl.ac.uk/WEISS/SoftwareRepositories/SNAPPY/scikit-surgerytrackervisualisation/commits/master
+.. image:: https://coveralls.io/repos/github/UCL/scikit-surgerytrackervisualisation/badge.svg?branch=master&service=github
+    :target: https://coveralls.io/github/UCL/scikit-surgerytrackervisualisation?branch=master 
     :alt: Test coverage
 
 .. image:: https://readthedocs.org/projects/scikit-surgerytrackervisualisation/badge/?version=latest
     :target: http://scikit-surgerytrackervisualisation.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
+.. image:: https://img.shields.io/badge/Cite-SciKit--Surgery-informational
+   :target: https://doi.org/10.1007/s11548-020-02180-5
+   :alt: The SciKit-Surgery paper
 
 
 Author: Stephen Thompson
 
-scikit-surgerytrackervisualisation is part of the `SNAPPY`_ software project, developed at the `Wellcome EPSRC Centre for Interventional and Surgical Sciences`_, part of `University College London (UCL)`_.
+scikit-surgerytrackervisualisation is part of the `SciKit-Surgery`_ software project, developed at the `Wellcome EPSRC Centre for Interventional and Surgical Sciences`_, part of `University College London (UCL)`_.
 
 scikit-surgerytrackervisualisation supports Python 2.7 and Python 3.6.
 
-scikit-surgerytrackervisualisation implements a basic interface for showing tracking output from a SNAPPY tracker. 
+scikit-surgerytrackervisualisation implements a basic interface for showing tracking output from a SciKit-Surgery tracker. 
 
 ::
 
@@ -46,7 +49,7 @@ You can clone the repository using the following command:
 
 ::
 
-    git clone https://weisslab.cs.ucl.ac.uk/WEISS/SoftwareRepositories/SNAPPY/scikit-surgerytrackervisualisation
+    git clone https://github.com/UCL/scikit-surgerytrackervisualisation
 
 
 Running tests
@@ -76,7 +79,7 @@ You can pip install directly from the repository as follows:
 
 ::
 
-    pip install git+https://weisslab.cs.ucl.ac.uk/WEISS/SoftwareRepositories/SNAPPY/scikit-surgerytrackervisualisation
+    pip install git+https://github.com/UCL/scikit-surgerytrackervisualisation
 
 
 
@@ -107,12 +110,12 @@ Supported by `Wellcome`_ and `EPSRC`_.
 
 
 .. _`Wellcome EPSRC Centre for Interventional and Surgical Sciences`: http://www.ucl.ac.uk/weiss
-.. _`source code repository`: https://weisslab.cs.ucl.ac.uk/WEISS/SoftwareRepositories/SNAPPY/scikit-surgerytrackervisualisation
+.. _`source code repository`: https://github.com/UCL/scikit-surgerytrackervisualisation
 .. _`Documentation`: https://scikit-surgerytrackervisualisation.readthedocs.io
-.. _`SNAPPY`: https://weisslab.cs.ucl.ac.uk/WEISS/PlatformManagement/SNAPPY/wikis/home
+.. _`SciKit-Surgery`: https://github.com/UCL/scikit-surgery/wiki
 .. _`University College London (UCL)`: http://www.ucl.ac.uk/
 .. _`Wellcome`: https://wellcome.ac.uk/
 .. _`EPSRC`: https://www.epsrc.ac.uk/
-.. _`contributing guidelines`: https://weisslab.cs.ucl.ac.uk/WEISS/SoftwareRepositories/SNAPPY/scikit-surgerytrackervisualisation/blob/master/CONTRIBUTING.rst
-.. _`license file`: https://weisslab.cs.ucl.ac.uk/WEISS/SoftwareRepositories/SNAPPY/scikit-surgerytrackervisualisation/blob/master/LICENSE
+.. _`contributing guidelines`: https://github.com/UCL/scikit-surgerytrackervisualisation/blob/master/CONTRIBUTING.rst
+.. _`license file`: https://github.com/UCL/scikit-surgerytrackervisualisation/blob/master/LICENSE
 
