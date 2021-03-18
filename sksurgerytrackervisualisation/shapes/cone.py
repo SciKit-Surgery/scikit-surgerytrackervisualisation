@@ -25,7 +25,7 @@ class VTKConeModel(vbs.VTKSurfaceModel):
         :param opacity: float [0,1]
         """
 
-        super(VTKConeModel, self).__init__(None, colour, visibility,
+        super().__init__(None, colour, visibility,
                                            opacity)
         self.name = name
 

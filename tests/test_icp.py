@@ -3,7 +3,7 @@
 """scikit-surgerytrackervisualisation tests"""
 
 import pytest
-from vtk import vtkPolyData
+from vtk import vtkPolyData # pylint: disable=no-name-in-module
 from sksurgeryvtk.models.vtk_surface_model import VTKSurfaceModel
 
 import sksurgerytrackervisualisation.algorithms.icp as icp
