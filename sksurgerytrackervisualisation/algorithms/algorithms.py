@@ -22,7 +22,7 @@ def np2vtk(mat):
     :raises: ValueError when matrix is not 4x4
     """
     if mat.shape == (4, 4):
-        obj = vtk.vtkMatrix4x4()
+        obj = vtk.vtkMatrix4x4()  # pylint: disable=no-member
         for i in range(4):
             for j in range(4):
                 obj.SetElement(i, j, mat[i, j])

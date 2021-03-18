@@ -1,7 +1,7 @@
 """
 Algorithms for doing Iterative Closest Point
 """
-from vtk import vtkIterativeClosestPointTransform, vtkCellLocator, vtkMatrix4x4
+from vtk import vtkIterativeClosestPointTransform, vtkCellLocator, vtkMatrix4x4# pylint: disable=no-name-in-module
 
 def vtk_icp(source, target, locator=None, max_iterations=100,
             max_landmarks=1000, check_mean_distance=False,

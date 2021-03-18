@@ -6,9 +6,9 @@ ability to dynamically add points
 """
 
 from numpy import hstack, ones, int64, arange, ascontiguousarray, warnings
-from vtk import (vtkPoints, vtkCellArray, vtkPolyData, vtkPolyDataMapper,
-                 VTK_ID_TYPE)
-from vtk.util import numpy_support
+from vtk import (vtkPoints, vtkCellArray, vtkPolyData, vtkPolyDataMapper, # pylint: disable=no-name-in-module
+                VTK_ID_TYPE)
+from vtk.util import numpy_support # pylint: disable=no-name-in-module,import-error
 import sksurgeryvtk.models.vtk_base_model as vbm
 
 
@@ -26,9 +26,9 @@ class VTKDynamicPointCloud(vbm.VTKBaseModel):
         :param visibility: boolean, True|False
         :param opacity: float [0,1]
         """
-        super(VTKDynamicPointCloud, self).__init__((1.0, 1.0, 1.0),
-                                                   visibility,
-                                                   opacity)
+        super().__init__((1.0, 1.0, 1.0),
+                         visibility,
+                         opacity)
 
         self._vtk_points = vtkPoints()
         self._vtk_points.SetDataTypeToFloat()
