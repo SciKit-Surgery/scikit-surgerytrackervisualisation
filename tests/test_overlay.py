@@ -21,7 +21,7 @@ def test_default_image(setup_qt):
         "models" : [
             {
                 "name"        : "tip",
-                "port handle" : 0,
+                "port handle" : "DICT_4X4_50:0",
                 "load"        : False,
                 "filename"    : "n/a",
                 "source"      : "cylinder",
@@ -52,7 +52,7 @@ def test_with_camera(setup_qt):
         "models" : [
             {
                 "name"        : "tip",
-                "port handle" : 0,
+                "port handle" : "DICT_4X4_50:0",
                 "load"        : False,
                 "filename"    : "n/a",
                 "source"      : "cylinder",
@@ -89,7 +89,7 @@ def test_with_camera_no_bounding(setup_qt):
         "models" : [
             {
                 "name"        : "tip",
-                "port handle" : 0,
+                "port handle" : "DICT_4X4_50:0",
                 "load"        : False,
                 "filename"    : "n/a",
                 "source"      : "cylinder",
@@ -132,7 +132,7 @@ def test_invalid_video(setup_qt):
         "models" : [
             {
                 "name"        : "tip",
-                "port handle" : 0,
+                "port handle" : "DICT_4X4_50:0",
                 "load"        : False,
                 "filename"    : "n/a",
                 "source"      : "cylinder",
@@ -166,7 +166,7 @@ def test_invalid_video_config(setup_qt):
         "models" : [
             {
                 "name"        : "tip",
-                "port handle" : 0,
+                "port handle" : "DICT_4X4_50:0",
                 "load"        : False,
                 "filename"    : "n/a",
                 "source"      : "cylinder",
@@ -196,7 +196,7 @@ def test_key_press_event(setup_qt):
         "models" : [
             {
                 "name"        : "tip",
-                "port handle" : 0,
+                "port handle" : "DICT_4X4_50:0",
                 "load"        : False,
                 "source"      : "cylinder",
                 "colour"      : [1.0, 0.0, 0.0],
