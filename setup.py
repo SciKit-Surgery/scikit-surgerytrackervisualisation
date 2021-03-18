@@ -59,7 +59,7 @@ setup(
         'scikit-surgerycore',
         'scikit-surgeryutils',
         'scikit-surgerynditracker',
-        'scikit-surgeryarucotracker>=0.2.0'
+        'scikit-surgeryarucotracker
     ],
 
     entry_points={
